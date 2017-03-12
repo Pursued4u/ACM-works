@@ -1,0 +1,7 @@
+# .gitignore
+*
+!*/
+ut/
+!.gitignore
+!*.cpp
+!*.java
