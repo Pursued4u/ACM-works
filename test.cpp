@@ -1,85 +1,53 @@
 #include<bits/stdc++.h>
 using namespace std;
-#define db double
-#pragma comment(linker, "/STACK:102400000,102400000")
-int m,n,l,tmp;
-int mapp[1500][150][80];
-int vis[1500][150][80];
-int ans = 0;
-int dx[6] = {0,0,0,0,1,-1};
-int dy[6] = {0,0,1,-1,0,0};
-int dz[6] = {1,-1,0,0,0,0};
-struct node 
-{
-    int x,y,z;
-};
-node st,en;
-node now;
-bool check(int x,int y,int z){
-    if(x>=0&&x<m&&y>=0&&y<=n&&z>=0&&z<l&&!vis[x][y][z]&&mapp[x][y][z])
-    return true;
-    return false;
-}
-queue<node>que;
-
-int bfs(){
-    now.x = st.x;
-    now.y = st.y;
-    int ans = 1;
-    now.z = st.z;
-    que.push(now);
-    vis[now.x][now.y][now.z]=1;
-    while(!que.empty()){
-        now = que.front();
-        que.pop();
-        for(int i=0;i<6;i++){
-            int nx = now.x + dx[i];
-            int ny = now.y + dy[i];
-            int nz = now.z + dz[i];
-            if(check(nx,ny,nz)){
-                vis[nx][ny][nz]=1;
-                ans++;
-                node nn;
-                nn.x = nx;
-                nn.y = ny;
-                nn.z = nz;
-                que.push(nn);
-            }
-        }
-        
-    }
-    return ans;
-}
-
-
+#define ll long long
+#define CLOSEIO ios::sync_with_stdio(false)
+#define maxn 100005
+ll a[maxn];
+ll b[maxn];
 int main(){
-    cin >> m >> n >> l >> tmp;
-    for(int i=0;i<l;i++){
-        for(int j=0;j<m;j++){
-            for(int k=0;k<n;k++){
-                scanf("%d",&mapp[j][k][i]);
-            }
+    CLOSEIO;
+    int t;
+    cin >> t;
+    while(t--){
+        ll n;
+        ll m;
+        cin >> n >> m;
+        for(int i = 0; i<n;i++){
+            cin >> a[i];
         }
-    }
-    int ansr= 0;
-    for(int i=0;i<l;i++){
-        for(int j=0;j<m;j++){
-            for(int k=0;k<n;k++){
-                if(mapp[j][k][i]&&!vis[j][k][i])
-                {
-                    st.x = j; st.y = k; st.z = i;
-                    //cout << j<< " " << k << " " << i << endl;
-                    int num = bfs();
-                   // cout << num << endl;
-                    if(num>=tmp){
-                        ansr+=num;
-                    }
-                }
-            }
-        }
-    }
-    cout << ansr << endl;
-    
-    
+        int vis[maxn];
+        //memset(vis,0,sizeof(vis));
+        sort(a,a+n);
+        int tmp = 1;
+        b[0]=a[0];
 
+        for(int i=1;i<n;i++)
+        {
+            if(a[i]!=a[i-1])
+            b[tmp++] = a[i];
+        }
+        //cout << tmp << endl;
+        //for(ll i=0;i<tmp;i++)    b[i]=a[i];
+        ll ans = 0;
+        //for(int i=0;i<tmp;i++){
+          //  cout << b[i] << endl;
+        //}//
+        
+        for(int i=0;b[i]<=m;i++){
+            ll x  = *lower_bound(b,b+tmp,m-b[i]);
+            //cout << a[i] << " " << x << endl;
+            if(x+b[i]==m){
+                //if(!vis[x]){
+                  //  vis[x]=1;
+                    ans++;
+                //}
+            }
+            
+            else {continue;
+            //memset(vis,0,sizeof(vis));
+            }
+        }
+    cout << ans << endl;
+    }
 }
