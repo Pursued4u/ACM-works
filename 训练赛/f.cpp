@@ -11,11 +11,8 @@ int main(){
     scanf("%d",&t);
     for(s=1;s<=t;s++)
     {
-
-
     int n;
     cin>>n;
-
     a[0]=1;
     int k=1;
     int temp;
