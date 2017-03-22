@@ -45,5 +45,30 @@ int Read() {
 }
 int main()
 {
-
+    ll n;
+    while(cin >> n){
+        if(!n) break; 
+        ll c1,n1,c2,n2;
+        cin >> c1 >> n1 >> c2 >> n2;
+        ll ans = INF;
+        ll tmp= INF;
+        ll ans1=0;
+        
+        for(int i=0;i<=n/n1;i++){
+            if((n-i*n1)%n2==0)
+            {
+                tmp = i*c1+c2*((n-i*n1)/n2);
+          //      cout << tmp << endl;
+            }
+            if(tmp<ans){
+                ans = tmp;
+                ans1 = i;
+            }
+        }
+        //cout << ans << endl;
+        if(ans ==INF)
+        cout << "failed" << endl;
+        else
+        cout << ans1 << " " << (n-ans1*n1)/n2 << endl;
+    }
 }

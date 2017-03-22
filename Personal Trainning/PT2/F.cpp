@@ -84,10 +84,10 @@ int main()
         dfs(ans,x,y);
         //ve.erase(unique(ve.begin(),ve.end()),ve.end());
         sort(ve.begin(),ve.end());
-
-        for(int i=0;i<ve.size();i++){
+        cout << ve.size() << endl;
+        /*for(int i=0;i<ve.size();i++){
             cout <<ve[i] << endl;
-        }
+        }*/
         cout << endl;
     }
 

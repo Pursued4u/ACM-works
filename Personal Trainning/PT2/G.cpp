@@ -27,7 +27,7 @@
 #define drep(a,b,c) for(int (a)=(b);(a)>(c);--(a))
 #define dbg(x) cout << #x << "=" << x << endl
 using namespace std;
-const int maxn = 1e5+5;
+const int maxn = 1e4+5;
 typedef long long ll;
 typedef double db;
 const int inf = INT_MAX;
@@ -43,7 +43,30 @@ int Read() {
     while (C >= '0' && C <= '9') { x = x * 10 - '0' + C, C = getchar(); }
     return x * F;
 }
+int dp[maxn][maxn];
 int main()
 {
+    int t;
+    cin >> t;
+    for(int i=0;i<maxn;i++) {
+        dp[1][i] = i+1;
+        dp[i][1] = i+1;
+    }
+    for(int i=2;i<=10000;i++){
+        for(int j=2;j<=10000;j++)
+        {
+            if(i==j){
+                dp[i][j] = (dp[i-1][j]*2)%mod;
+            }
+            else{
+                dp[i][j] = (dp[i][j-1]+dp[i-1][j])%mod;
+            }
+        }
+    }
+    while(t--){
+        int m,n;
+        cin >> m >> n;
+        cout << dp[min(m,n)][max(m,n)] << endl;
 
+    }
 }
