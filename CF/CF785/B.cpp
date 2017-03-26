@@ -54,7 +54,7 @@ int main(){
 {
     int x,y;
     cin >> x>> y;
-    mina = min(y,mina);
+    mina = min(y,mina);  
     maxa = max(x,maxa);
     
     
