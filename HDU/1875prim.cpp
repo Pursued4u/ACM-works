@@ -4,9 +4,12 @@ using namespace std;
 #define db double
 #define eps 1e-8
 #define maxn 107
+
 struct node {
+
   int to;
   db v;
+  
   node(int u, db x) : to(u), v(x) {}
   node() {}
   bool operator<(const node &a) const { return a.v < v; }

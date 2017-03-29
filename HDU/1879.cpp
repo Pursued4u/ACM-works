@@ -38,8 +38,10 @@ void kruskal(){
         }
     }
 }
+
 int main(){
     while(cin >> n){
+    if(n==0) break;    
     m = n*(n-1)/2;
     init();
     for(int i=0;i<m;i++){
@@ -48,9 +50,12 @@ int main(){
         E[i]=node(x,y,z,w);
     }
     sort(E,E+m,cmp);    
+   /* for(int i=0;i<m;i++){
+        cout << E[i].bj << endl;
+    }*/
     kruskal();
+        cout << res << endl;
     }
-    cout << res << endl;
 }
 
 
