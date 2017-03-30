@@ -5,6 +5,7 @@ struct node{
     int t;
     int last;
 };
+
 node a[10005];
 set<string>st[105];
 int vis[10005] = {false};
@@ -16,9 +17,11 @@ int main(){
     for(int i=1;i<=n;i++){
         int q; cin >> q;
         while(q--){
+
             string a; cin >> a;
             st[i].insert(a);  
             mp[a]=i;
+            
         }
     }
     for(int i=0;i<m;i++){
