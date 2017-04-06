@@ -27,7 +27,7 @@
 #define drep(a,b,c) for(int (a)=(b);(a)>(c);--(a))
 #define dbg(x) cout << #x << "=" << x << endl
 using namespace std;
-const int maxn = 1e5+5;
+const int maxn = 5e3+5;
 typedef long long ll;
 typedef double db;
 const int inf = INT_MAX;
@@ -43,11 +43,69 @@ int Read() {
     while (C >= '0' && C <= '9') { x = x * 10 - '0' + C, C = getchar(); }
     return x * F;
 }
-int a[maxn];
-int dp[maxn];
+struct node{
+    db x;
+    db v;
+    db last;
+    node (int xx,int vv) {
+        x = xx;
+        v = vv; 
+    }
+    node () {}
+};
+bool cmp(node a,node b){
+    if(a.x==b.x) return a.v < b.v;
+    else return a.x < b.x;
+}
+stack<node>st;
+node l[maxn],rl[maxn];
 int main()
 {
-
+    FILEIN;
+    int t; cin >> t;
+    while(t--){
+        while(st.size()) st.pop();
+        int k = 0;
+        int n; cin >> n;
+        for(int i=0;i<n;i++){
+            db xx,vv; scanf("%lf %lf",&xx,&vv);
+            l[k++] = node(xx,vv);
+        }
+    sort(l,l+k,cmp);   
+    int num = 0;
+    for(int i=0;i<n-1;i++){
+        if(l[i].x==l[i+1].x);
+        else rl[num++] = l[i];
+    }
+    rl[num++] = l[n-1];
+    if(num<2){
+        cout << num << endl;
+        continue;
+    }
+    else{
+        rl[0].last = -inf;
+        int cur = 1;
+        st.push(rl[0]);
+        while(!st.empty()){
+            cout << st.size() << endl;
+            if(cur>=num) break;
+            node nl = rl[cur];
+            node dl = st.top();
+            double np = (nl.v-dl.v)/(dl.x-nl.x);
+           // cout << np << " " << dl.last << endl;
+            if(dl.last+eps>=np){
+                st.pop();
+                continue;
+            }
+            else{
+                nl.last = np;
+                st.push(nl);
+                cur++;
+            }
+        }
+    cout << st.size() << "\n";
+    }
+    }
 }
 
 

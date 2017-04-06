@@ -9,6 +9,7 @@
 #include<stack>
 #include<climits>
 #include<ctime>
+#include<set>
 #include<queue>
 #define FILEIN freopen("in.txt", "r", stdin)
 #define FILEOUT freopen("out.txt", "w", stdout)
@@ -16,7 +17,7 @@
 #define PI acos(-1)
 #define CLR(a) memset(a,0,sizeof(a))
 #define MEM(a,x) memset(a,x,sizoef(a))
-#define eps 1e-8
+#define eps 1e-5
 #define sf(x) scanf("%d",&x)
 #define PB(x) push_back(x)
 #define MP(x, y) make_pair(x, y)
@@ -43,41 +44,10 @@ int Read() {
     while (C >= '0' && C <= '9') { x = x * 10 - '0' + C, C = getchar(); }
     return x * F;
 }
-
-char s[255][255];
-int vis[266][266];
-int m,n;
-int getnum(char x){
-    int cnt = 0;
-    CLR(vis);
-    for(int i=0;i<m;i++){
-        for(int j=0;j<n;j++){
-            if(s[i][j]==x){
-                for(int k=j+1;k<n;k++){
-                    if(s[i][k]==x&&!vis[j][k]){
-                        vis[j][k]=1;
-                        int tmp = 1;
-                        for(int l=i+1;l<m;l++){
-                            if(s[l][j]==x&&s[l][k]==x)
-                            {tmp++;}
-                        }
-                    cnt+=tmp*(tmp-1)/2;
-                    }
-                }
-            }    
-        }
-    }
-    return cnt;
-}
+// C
 int main()
 {
-    //FILEIN;
-    int t; cin >> t;
-    while(t--){
-        cin >> m >> n;
-        for(int i = 0;i<m;i++){
-            scanf("%s",s[i]);
-        }
-        cout << getnum('B') + getnum('J')+getnum('H')+getnum('Y')+getnum('N')<< "\n";
-    }
+
 }
+
+

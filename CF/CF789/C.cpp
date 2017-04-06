@@ -9,6 +9,7 @@
 #include<stack>
 #include<climits>
 #include<ctime>
+#include<set>
 #include<queue>
 #define FILEIN freopen("in.txt", "r", stdin)
 #define FILEOUT freopen("out.txt", "w", stdout)
@@ -16,7 +17,7 @@
 #define PI acos(-1)
 #define CLR(a) memset(a,0,sizeof(a))
 #define MEM(a,x) memset(a,x,sizoef(a))
-#define eps 1e-8
+#define eps 1e-5
 #define sf(x) scanf("%d",&x)
 #define PB(x) push_back(x)
 #define MP(x, y) make_pair(x, y)
@@ -27,7 +28,7 @@
 #define drep(a,b,c) for(int (a)=(b);(a)>(c);--(a))
 #define dbg(x) cout << #x << "=" << x << endl
 using namespace std;
-const int maxn = 1e5+5;
+const long long maxn = 1e6+5;
 typedef long long ll;
 typedef double db;
 const int inf = INT_MAX;
@@ -43,41 +44,41 @@ int Read() {
     while (C >= '0' && C <= '9') { x = x * 10 - '0' + C, C = getchar(); }
     return x * F;
 }
+// C
+int fa[maxn*3];
+int Find(int x){
+    return fa[x]==x?x:fa[x]=Find(fa[x]);
+}
 
-char s[255][255];
-int vis[266][266];
-int m,n;
-int getnum(char x){
-    int cnt = 0;
-    CLR(vis);
-    for(int i=0;i<m;i++){
-        for(int j=0;j<n;j++){
-            if(s[i][j]==x){
-                for(int k=j+1;k<n;k++){
-                    if(s[i][k]==x&&!vis[j][k]){
-                        vis[j][k]=1;
-                        int tmp = 1;
-                        for(int l=i+1;l<m;l++){
-                            if(s[l][j]==x&&s[l][k]==x)
-                            {tmp++;}
-                        }
-                    cnt+=tmp*(tmp-1)/2;
-                    }
-                }
-            }    
-        }
+ll a[maxn];
+ll b[maxn];
+ll sum[maxn];
+ll sum2[maxn];
+int main(){
+    int n;
+    cin >> n;
+    for(int i=0;i<n;i++) scanf("%I64d",&a[i]);
+    for(int i=0;i<n-1;i++){
+        b[i]=abs(a[i]-a[i+1]);
+        if((i%2)) b[i]*=-1;
     }
-    return cnt;
-}
-int main()
-{
-    //FILEIN;
-    int t; cin >> t;
-    while(t--){
-        cin >> m >> n;
-        for(int i = 0;i<m;i++){
-            scanf("%s",s[i]);
-        }
-        cout << getnum('B') + getnum('J')+getnum('H')+getnum('Y')+getnum('N')<< "\n";
+    ll ans = -INF ;
+    ll last = -INF;
+    //for(int i=0;i<n-1;i++) cout <<b[i];
+    for ( int i = 0 ; i < n-1 ; i++ )
+    {
+    last = max((ll)0,last)+b[i];
+    ans = max(ans,last);
     }
-}
+
+    for(int i=0;i<n-1;i++){
+        b[i]*=-1;
+    }
+    ll ans1=-INF;
+    last = -INF;
+    for ( int i = 0 ; i < n-1 ; i++ )
+    {
+    last = max((ll)0,last)+b[i];
+    ans1= max(ans1,last);
+    }
+    cout << max(ans1,ans) <<endl;
