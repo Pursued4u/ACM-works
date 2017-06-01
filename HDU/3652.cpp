@@ -15,7 +15,7 @@
 #define CLOSEIO ios::sync_with_stdio(false)
 #define PI acos(-1)
 #define CLR(a) memset(a,0,sizeof(a))
-#define MEM(a,x) memset(a,x,sizoef(a))
+#define MEM(a,x) memset(a,x,sizeof(a))
 #define eps 1e-8
 #define sf(x) scanf("%d",&x)
 #define PB(x) push_back(x)
@@ -42,4 +42,35 @@ int Read() {
     while (C < '0' || C > '9') { if (C == '-') F = -F; C = getchar(); }
     while (C >= '0' && C <= '9') { x = x * 10 - '0' + C, C = getchar(); }
     return x * F;
+}
+ll dp[12][12][20][2];
+int a[12];
+ll dfs(int pos,int pre,int presum,int fg,int limit){
+    if(pos<0) return (presum%13)==0&&fg;
+    if(!limit&&dp[pos][pre][presum][fg]!=-1 ) return dp[pos][pre][presum][fg];
+    ll res = 0;
+    int up = limit?a[pos]:9;
+    for(int i=0;i<=up;i++){ 
+        int nowsum = (presum*10+i)%13;
+        int nfg = fg||(pre==1&&i==3);
+        res+=dfs(pos-1,i,nowsum,nfg,(limit&&(i==up)));
+    }
+    if(!limit) dp[pos][pre][presum][fg] = res;
+    return res;
+}
+int solve(ll x){
+    int pos = 0;
+    while(x){
+        a[pos++] = x%10;
+        x/=10;
+    }    return dfs(pos-1,0,0,0,1);
+}
+int main(){
+    int n;
+    MEM(dp,-1);
+    while(~scanf("%d",&n)){
+        cout << solve(n) << endl;
+    }
+
+
 }

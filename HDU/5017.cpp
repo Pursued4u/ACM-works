@@ -41,7 +41,6 @@ db Findy(db x){
     }
     return dis(x,l);
 }
-
 int main(){
     while(~scanf("%lf %lf %lf %lf %lf %lf",&a,&b,&c,&d,&e,&f))
     {

@@ -15,7 +15,7 @@
 #define CLOSEIO ios::sync_with_stdio(false)
 #define PI acos(-1)
 #define CLR(a) memset(a,0,sizeof(a))
-#define MEM(a,x) memset(a,x,sizoef(a))
+#define MEM(a,x) memset(a,x,sizeof(a))
 #define eps 1e-8
 #define sf(x) scanf("%d",&x)
 #define PB(x) push_back(x)

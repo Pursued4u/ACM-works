@@ -15,7 +15,7 @@
 #define CLOSEIO ios::sync_with_stdio(false)
 #define PI acos(-1)
 #define CLR(a) memset(a,0,sizeof(a))
-#define MEM(a,x) memset(a,x,sizoef(a))
+#define MEM(a,x) memset(a,x,sizeof(a))
 #define eps 1e-8
 #define sf(x) scanf("%d",&x)
 #define PB(x) push_back(x)
@@ -42,4 +42,37 @@ int Read() {
     while (C < '0' || C > '9') { if (C == '-') F = -F; C = getchar(); }
     while (C >= '0' && C <= '9') { x = x * 10 - '0' + C, C = getchar(); }
     return x * F;
+}
+int a[20];
+ll dp[25][10][2];
+ll dfs(int pos,int pre,int fg,bool limit){
+    if(pos<0) return fg;
+    if(!limit&&dp[pos][pre][fg]!=-1) return dp[pos][pre][fg];
+    int up = limit?a[pos]:9;
+    ll res = 0;
+    for(int i=0;i<=up;i++){
+        res+=dfs(pos-1,i,fg||(pre==4&&i==9),limit&&(i==up));
+    }
+    if(!limit) dp[pos][pre][fg]=res;
+    return res;
+
+}
+ll getsum(ll x){
+    int pos = 0;
+    while(x){
+        a[pos++]=x%10;
+        x/=10;
+    }
+    return dfs(pos-1,0,0,true);
+
+}
+int main(){
+    int t = Read();
+    while(t--){
+        MEM(dp,-1);
+        ll n;
+        cin >> n;
+        cout << getsum(n) << endl;
+    }
+
 }

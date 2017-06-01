@@ -15,7 +15,7 @@
 #define CLOSEIO ios::sync_with_stdio(false)
 #define PI acos(-1)
 #define CLR(a) memset(a,0,sizeof(a))
-#define MEM(a,x) memset(a,x,sizoef(a))
+#define MEM(a,x) memset(a,x,sizeof(a))
 #define eps 1e-8
 #define sf(x) scanf("%d",&x)
 #define PB(x) push_back(x)
@@ -42,4 +42,53 @@ int Read() {
     while (C < '0' || C > '9') { if (C == '-') F = -F; C = getchar(); }
     while (C >= '0' && C <= '9') { x = x * 10 - '0' + C, C = getchar(); }
     return x * F;
+}
+ll LCM =2520;
+int dig[20];
+ll dp[20][2555][50];
+int ind[5000];
+ll gcd(ll a ,ll b){
+    return !b?a:gcd(b,a%b);
+}
+ll lcm(ll a,ll b){
+    return a/gcd(a,b)*b;
+}
+ll dfs(int pos,int prezero,int presum,int prelcm,bool limit){
+    if(pos==-1) return presum%prelcm==0;
+    if(!limit&&dp[pos][presum][ind[prelcm]]!=-1) return dp[pos][presum][ind[prelcm]];
+    ll res = 0;
+    int up = limit?dig[pos]:9;
+    for(int i=0;i<=up;i++){
+        int nowsum = (presum*10+i)%LCM;
+        int nowlcm = prelcm;
+        if(i)nowlcm = lcm(nowlcm,i);
+        res+=dfs(pos-1,prezero&&!i,nowsum,nowlcm,(limit&&i==up));
+    }
+    if(!limit) dp[pos][presum][ind[prelcm]] = res;
+    return res;
+}
+ll get(ll x){
+    int pos = 0;
+    while(x){
+        dig[pos++] = x%10;
+        x/=10;
+    }
+    return dfs(pos-1,1,0,1,1);
+}
+void init(){
+    int num =0;
+    for(int i=1;i<=2520;i++){
+        if(!(LCM%i)) ind[i] = num++;
+    }
+}
+int main(){
+    int t;cin >> t;
+    init();
+    MEM(dp,-1);
+    while(t--){
+        ll l,r;
+        cin >> l >> r;
+        cout << get(r) - get(l-1) << endl;
+    }
+
 }
