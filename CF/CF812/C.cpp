@@ -43,7 +43,37 @@ int Read() {
     while (C >= '0' && C <= '9') { x = x * 10 - '0' + C, C = getchar(); }
     return x * F;
 }
+ll a[maxn];
+ll sum[maxn];
+ll n,s;
+ll check(ll x){
+    ll ans = 0;
+    for(int i=0;i<n;i++){
+        sum[i] = a[i]+(i+1ll)*x;
+    }
+    sort(sum,sum+n);
+    for(int i=0;i<x;i++){
+        ans+=sum[i];
+    }
+    return ans;
+}
+
 int main()
 {
-
+    cin >> n >> s;
+    for(int i=0;i<n;i++){
+        scanf("%lld",&a[i]);
+    }
+    ll l = 0;
+    ll r = n+1;
+    ll res =0;
+    while(l<r){
+        ll mid = (l+r)>>1;
+        if(check(mid)<=s) {
+            l = mid+1;
+            res = check(mid);
+            }
+        else r = mid;
+    }
+    cout <<l-1 <<" "<< res << endl;
 }

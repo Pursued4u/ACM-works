@@ -7,6 +7,8 @@
 #include<cmath>
 #include<vector>
 #include<stack>
+#include<climits>
+#include<ctime>
 #include<queue>
 #define FILEIN freopen("in.txt", "r", stdin)
 #define FILEOUT freopen("out.txt", "w", stdout)
@@ -28,6 +30,8 @@ using namespace std;
 const int maxn = 1e5+5;
 typedef long long ll;
 typedef double db;
+const int inf = INT_MAX;
+const ll INF = LLONG_MAX;
 const ll mod = 1e9 + 7;
 ll mul(ll x,ll y){return x*y%mod;}
 ll q_mul(ll a, ll b){ ll ans = 0;while(b){if(b & 1){ans=(ans+a)%mod;} b>>=1;a=(a+a) % mod;}return ans;}
@@ -40,36 +44,47 @@ int Read() {
     return x * F;
 }
 
-ll dp[20][20][2][2];
 int a[20];
-ll dfs(int pos,int pre,int odd,int fg, int limit){
-    if(pos<0) return 1;
-    if(dp[pos][pre][fg][odd]!=-1&&!limit) return dp[pos][pre][fg][odd];
-    ll res = 0;
-    int up = limit?a[pos]:9;
-    for(int i=0;i<=up;i++){
-        if(i>=pre&&odd) res+=dfs(pos-1,i,0,fg&&!i,limit&&(i==up));
-        else if(i<=pre&&!odd) res += dfs(pos-1,i,1,fg&&!i,limit&&(i==up));
+int dp[12][5000][2];
+int sum;
+int cal(int x){
+    int cnt = 0;
+    int cur = 0;
+    while(x){
+        cnt+=(x%10)*(1<<cur++);
+        x/=10;
     }
-    if(!limit) dp[pos][pre][fg][odd] = res;
+    return cnt; 
+}
+int dfs(int pos,int summ,int limit){
+    if(pos<0) return summ>=0;
+    if(summ<0) return 0;
+    if(!limit&&dp[pos][summ][limit]!=-1) return dp[pos][summ][limit];
+    int up = limit?a[pos]:9;
+    int res = 0;
+    for(int i=0;i<=up;i++){
+        res+=dfs(pos-1,summ-i*(1<<pos),limit&&i==up);
+    }
+    if(!limit) dp[pos][summ][limit] = res;
     return res;
 }
-ll getsum(ll x){
+int solve(int y,int x){
     int pos = 0;
     while(x){
         a[pos++] = x%10;
         x/=10;
     }
-    pos = pos-1;
-    return dfs(pos,9,0,1,1);
+    sum = cal(y);
+    return dfs(pos-1,sum,1);
 }
 int main(){
-    int t;
+    int ca = 1;
+    int t; cin >> t;
     MEM(dp,-1);
-    cin >> t;
     while(t--){
-        ll l,r;
-        cin >> l>> r;
-        cout << getsum(r)- getsum(l-1) << endl;
+        int a,b;
+        cin >> a >> b;
+        printf("Case #%d: ",ca++);
+        cout << solve(a,b) << endl;
     }
 }

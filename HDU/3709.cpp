@@ -7,6 +7,8 @@
 #include<cmath>
 #include<vector>
 #include<stack>
+#include<climits>
+#include<ctime>
 #include<queue>
 #define FILEIN freopen("in.txt", "r", stdin)
 #define FILEOUT freopen("out.txt", "w", stdout)
@@ -28,6 +30,8 @@ using namespace std;
 const int maxn = 1e5+5;
 typedef long long ll;
 typedef double db;
+const int inf = INT_MAX;
+const ll INF = LLONG_MAX;
 const ll mod = 1e9 + 7;
 ll mul(ll x,ll y){return x*y%mod;}
 ll q_mul(ll a, ll b){ ll ans = 0;while(b){if(b & 1){ans=(ans+a)%mod;} b>>=1;a=(a+a) % mod;}return ans;}
@@ -39,37 +43,41 @@ int Read() {
     while (C >= '0' && C <= '9') { x = x * 10 - '0' + C, C = getchar(); }
     return x * F;
 }
-
-ll dp[20][20][2][2];
+ll dp[20][20][2000];
 int a[20];
-ll dfs(int pos,int pre,int odd,int fg, int limit){
-    if(pos<0) return 1;
-    if(dp[pos][pre][fg][odd]!=-1&&!limit) return dp[pos][pre][fg][odd];
-    ll res = 0;
+ll dfs(int pos,int np,int sum,int limit)
+{
+    if(pos<0) return !sum;
+    if(sum<0) return 0;
+    if(!limit&&dp[pos][np][sum]!=-1) return dp[pos][np][sum];
     int up = limit?a[pos]:9;
+    ll res = 0;
     for(int i=0;i<=up;i++){
-        if(i>=pre&&odd) res+=dfs(pos-1,i,0,fg&&!i,limit&&(i==up));
-        else if(i<=pre&&!odd) res += dfs(pos-1,i,1,fg&&!i,limit&&(i==up));
+        ll nsum = sum;
+        nsum+=(pos-np)*i;
+        res+=dfs(pos-1,np,nsum,limit&&(i==up));
     }
-    if(!limit) dp[pos][pre][fg][odd] = res;
+    if(!limit) dp[pos][np][sum] = res; 
     return res;
 }
-ll getsum(ll x){
+ll solve(ll x){
     int pos = 0;
     while(x){
         a[pos++] = x%10;
         x/=10;
     }
-    pos = pos-1;
-    return dfs(pos,9,0,1,1);
+    ll ans = 0;
+    for(int i=0;i<pos;i++){
+        ans+=dfs(pos-1,i,0,1);
+    }
+    return ans-(pos-1);
 }
 int main(){
-    int t;
+    int t; cin >> t;
     MEM(dp,-1);
-    cin >> t;
     while(t--){
-        ll l,r;
-        cin >> l>> r;
-        cout << getsum(r)- getsum(l-1) << endl;
+    ll l, r;
+    cin >> l >>r;
+    cout << solve(r)-solve(l-1) << endl;;
     }
 }

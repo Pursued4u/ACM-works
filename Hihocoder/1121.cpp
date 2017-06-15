@@ -7,6 +7,8 @@
 #include<cmath>
 #include<vector>
 #include<stack>
+#include<climits>
+#include<ctime>
 #include<queue>
 #define FILEIN freopen("in.txt", "r", stdin)
 #define FILEOUT freopen("out.txt", "w", stdout)
@@ -25,9 +27,11 @@
 #define drep(a,b,c) for(int (a)=(b);(a)>(c);--(a))
 #define dbg(x) cout << #x << "=" << x << endl
 using namespace std;
-const int maxn = 1e5+5;
+const int maxn = 1e4+5;
 typedef long long ll;
 typedef double db;
+const int inf = INT_MAX;
+const ll INF = LLONG_MAX;
 const ll mod = 1e9 + 7;
 ll mul(ll x,ll y){return x*y%mod;}
 ll q_mul(ll a, ll b){ ll ans = 0;while(b){if(b & 1){ans=(ans+a)%mod;} b>>=1;a=(a+a) % mod;}return ans;}
@@ -39,37 +43,54 @@ int Read() {
     while (C >= '0' && C <= '9') { x = x * 10 - '0' + C, C = getchar(); }
     return x * F;
 }
+int color[maxn];
+vector<int>G[maxn];
+bool dfs(int v,int cur){
+    color[v]  = cur;
+    for(int i=0;i<G[v].size();i++){
+        int u = G[v][i];
+        if(color[u]==color[v]) return false;
+        if(!color[u]&&!dfs(u,-cur)) return false;
+    }
+    return true;
 
-ll dp[20][20][2][2];
-int a[20];
-ll dfs(int pos,int pre,int odd,int fg, int limit){
-    if(pos<0) return 1;
-    if(dp[pos][pre][fg][odd]!=-1&&!limit) return dp[pos][pre][fg][odd];
-    ll res = 0;
-    int up = limit?a[pos]:9;
-    for(int i=0;i<=up;i++){
-        if(i>=pre&&odd) res+=dfs(pos-1,i,0,fg&&!i,limit&&(i==up));
-        else if(i<=pre&&!odd) res += dfs(pos-1,i,1,fg&&!i,limit&&(i==up));
-    }
-    if(!limit) dp[pos][pre][fg][odd] = res;
-    return res;
 }
-ll getsum(ll x){
-    int pos = 0;
-    while(x){
-        a[pos++] = x%10;
-        x/=10;
+void init(int x){   
+
+    CLR(color);
+    for(int i=1;i<=x;i++){
+        G[i].clear();
     }
-    pos = pos-1;
-    return dfs(pos,9,0,1,1);
 }
+
 int main(){
+    #ifdef ONLINE_JUDGE
+    #else 
+        FILEIN;
+    #endif
+    int m,n;
     int t;
-    MEM(dp,-1);
     cin >> t;
     while(t--){
-        ll l,r;
-        cin >> l>> r;
-        cout << getsum(r)- getsum(l-1) << endl;
+        cin >> m >> n;
+        init(m);
+        for(int i=0;i<n;i++){
+            int u,v;
+            u = Read();
+            v = Read();
+            G[u].PB(v);
+            G[v].PB(u);
+        }
+        int flag = 1;
+        for(int i=1;i<=m;i++){
+            if(flag&&!color[i]){
+                flag = dfs(i,1);
+            }
+        }
+        if(flag) cout << "Correct" << endl;
+        else cout << "Wrong" << endl;
+
     }
+    
+
 }

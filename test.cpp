@@ -27,7 +27,8 @@
 #define drep(a,b,c) for(int (a)=(b);(a)>(c);--(a))
 #define dbg(x) cout << #x << "=" << x << endl
 using namespace std;
-const int maxn = 1e5+5;
+#define LOCAL
+const int maxn = 5e5+5;
 typedef long long ll;
 typedef double db;
 const int inf = INT_MAX;
@@ -42,4 +43,54 @@ int Read() {
     while (C < '0' || C > '9') { if (C == '-') F = -F; C = getchar(); }
     while (C >= '0' && C <= '9') { x = x * 10 - '0' + C, C = getchar(); }
     return x * F;
+}
+//int a[maxn],b[maxn];
+int vis[maxn];
+int main(){
+    #ifdef ONLINE_JUDGE
+    #else 
+      FILEIN;
+    #endif
+    int m,n;
+    
+    //FILEIN;
+    while(cin >> n){
+        CLR(vis);
+        if(!n) {
+            cout << -1 << endl;
+            continue;
+        }
+        //int t = n;
+        int tmp = 0;
+        int flag= -1;
+        //getchar();
+        for(int i=1;i<=n;i++)
+        {
+            char op[2];
+            scanf("%s",op);
+            //cout << op << endl;
+            if(op[0]=='I')
+            {
+                int x = Read();
+				if(!vis[x])
+                vis[x]++;
+            }
+            else if(op[0]=='O'){
+                int x = Read();
+                if(flag==-1){
+                if(!vis[x]&&!tmp){
+                    flag= i;
+                }
+                else if(vis[x]) vis[x]--;
+                else tmp--;
+            }
+            }
+            else tmp++;
+
+        //getchar();
+        }
+        cout << flag << endl;
+
+    }
+    
 }

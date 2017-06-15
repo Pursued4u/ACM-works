@@ -7,6 +7,8 @@
 #include<cmath>
 #include<vector>
 #include<stack>
+#include<climits>
+#include<ctime>
 #include<queue>
 #define FILEIN freopen("in.txt", "r", stdin)
 #define FILEOUT freopen("out.txt", "w", stdout)
@@ -24,10 +26,13 @@
 #define rep(a,b,c) for(int (a)=(b);(a)<(c);(a)++)
 #define drep(a,b,c) for(int (a)=(b);(a)>(c);--(a))
 #define dbg(x) cout << #x << "=" << x << endl
+#define LOCAL
 using namespace std;
 const int maxn = 1e5+5;
 typedef long long ll;
 typedef double db;
+const int inf = INT_MAX;
+const ll INF = LLONG_MAX;
 const ll mod = 1e9 + 7;
 ll mul(ll x,ll y){return x*y%mod;}
 ll q_mul(ll a, ll b){ ll ans = 0;while(b){if(b & 1){ans=(ans+a)%mod;} b>>=1;a=(a+a) % mod;}return ans;}
@@ -39,37 +44,36 @@ int Read() {
     while (C >= '0' && C <= '9') { x = x * 10 - '0' + C, C = getchar(); }
     return x * F;
 }
-
-ll dp[20][20][2][2];
-int a[20];
-ll dfs(int pos,int pre,int odd,int fg, int limit){
-    if(pos<0) return 1;
-    if(dp[pos][pre][fg][odd]!=-1&&!limit) return dp[pos][pre][fg][odd];
-    ll res = 0;
-    int up = limit?a[pos]:9;
+int dp[40][100];
+int a[40];
+int dfs(int pos,int tot,int limit,int z){
+    if(pos==-1) return tot>=38&&z;
+    if(!limit&&~dp[pos][tot]&&z) return dp[pos][tot];
+    int up = limit?a[pos]:1;
+    int res = 0;
     for(int i=0;i<=up;i++){
-        if(i>=pre&&odd) res+=dfs(pos-1,i,0,fg&&!i,limit&&(i==up));
-        else if(i<=pre&&!odd) res += dfs(pos-1,i,1,fg&&!i,limit&&(i==up));
+        int ntot = z?(tot+(i?-1:1)):tot-i;
+        res+=dfs(pos-1,ntot,limit&&i==up,z||i);
     }
-    if(!limit) dp[pos][pre][fg][odd] = res;
+    if(!limit&&z) dp[pos][tot] = res;
     return res;
 }
-ll getsum(ll x){
+int solve(int x){
     int pos = 0;
     while(x){
-        a[pos++] = x%10;
-        x/=10;
+        a[pos++] = x&1;
+        x>>=1;
     }
-    pos = pos-1;
-    return dfs(pos,9,0,1,1);
+    return dfs(pos-1,38,1,0);
 }
+
 int main(){
-    int t;
+    #ifdef LOCAL 
+     FILEIN;
+    #endif  
+    int m,n;
     MEM(dp,-1);
-    cin >> t;
-    while(t--){
-        ll l,r;
-        cin >> l>> r;
-        cout << getsum(r)- getsum(l-1) << endl;
-    }
+    cin >> m >> n;
+    //cout << solve(12) << endl;
+    cout << solve(n)-solve(m-1) << endl;
 }

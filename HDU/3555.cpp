@@ -57,6 +57,7 @@ ll dfs(int pos,int pre,int fg,bool limit){
     return res;
 
 }
+
 ll getsum(ll x){
     int pos = 0;
     while(x){
