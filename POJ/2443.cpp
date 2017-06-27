@@ -15,7 +15,7 @@
 #define CLOSEIO ios::sync_with_stdio(false)
 #define PI acos(-1)
 #define CLR(a) memset(a,0,sizeof(a))
-#define MEM(a,x) memset(a,x,sizoef(a))
+#define MEM(a,x) memset(a,x,sizeof(a))
 #define eps 1e-8
 #define sf(x) scanf("%d",&x)
 #define PB(x) push_back(x)
@@ -27,8 +27,7 @@
 #define drep(a,b,c) for(int (a)=(b);(a)>(c);--(a))
 #define dbg(x) cout << #x << "=" << x << endl
 using namespace std;
-#define LOCAL
-const int maxn = 5e5+5;
+const int maxn = 1e5+5;
 typedef long long ll;
 typedef double db;
 const int inf = INT_MAX;
@@ -44,31 +43,10 @@ int Read() {
     while (C >= '0' && C <= '9') { x = x * 10 - '0' + C, C = getchar(); }
     return x * F;
 }
-//int a[maxn],b[maxn];
-int a[maxn];
 int main(){
     #ifdef ONLINE_JUDGE
     #else 
-      FILEIN;
+        FILEIN;
     #endif
-    int m,n;
-    cin >> m;
-    for(int i=1;i<=m;i++){
-        scanf("%d",&a[i]);
-    }
-    priority_queue<int>q;
-    ll ans = 0;
-    for(int i=m;i>=1;i--){
-        if(q.size()&&a[i]<q.top()){
-            ans+=q.top()-a[i];
-            q.pop();
-            q.push(a[i]);
-        }
-        q.push(a[i]);
-
-    }
-    cout << ans << endl;
-
-    
     
 }
