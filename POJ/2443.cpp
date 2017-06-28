@@ -43,10 +43,35 @@ int Read() {
     while (C >= '0' && C <= '9') { x = x * 10 - '0' + C, C = getchar(); }
     return x * F;
 }
+int r[10005][40];
 int main(){
     #ifdef ONLINE_JUDGE
     #else 
         FILEIN;
     #endif
+    int n = Read();
+    for(int i=0;i<n;i++){
+        int m = Read();
+        while(m--){
+            int x = Read();
+            r[x][i/32] |= 1<<(i%32);
+        }
+    }
+    int q = Read();
+    while(q--){
+        int a,b;
+        a = Read();
+        b = Read();
+        int flag = 0;
+        for(int i=0;i<=n/32&&!flag;i++){
+            if(r[a][i]&r[b][i]){
+                flag=1;      
+                break;
+            }
+        }
+        if(flag) cout << "Yes" << endl;
+        else cout << "No" << endl; 
+    }
+
     
 }
