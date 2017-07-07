@@ -43,7 +43,44 @@ int Read() {
     while (C >= '0' && C <= '9') { x = x * 10 - '0' + C, C = getchar(); }
     return x * F;
 }
-int main()
-{
-
+struct house{
+    int pos;
+    ll need;
+}h[1005];
+int n;
+bool cmp(house a,house b){
+    return a.pos<b.pos;
 }
+ll k;
+ll getsum(int dir){
+    ll now,ans,t;
+    now = ans = t = 0;
+    int st = dir>0?n-1:0;
+    for(;st<n&&st>=0&&dir*h[st].pos>=0;st-=dir){
+        //cout << st << endl;
+        if(now>=h[st].need){
+            now -= h[st].need;
+            continue;
+        }
+        h[st].need -= now;
+        now = k;
+        t = h[st].need/now;
+        if(h[st].need%now) t++;
+        now = t*k-h[st].need;
+        ans+=t*h[st].pos*2*dir;
+    }
+    return ans;
+}
+int main()
+{  
+    ll ans = 0;
+    cin >> n >> k; 
+    for(int i=0;i<n;i++){
+        cin >> h[i].pos >> h[i].need;
+    }
+    sort(h,h+n,cmp);
+    ans+=getsum(1);
+    ans+=getsum(-1);
+    cout << ans << endl;
+}
+
