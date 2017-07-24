@@ -27,7 +27,7 @@
 #define drep(a,b,c) for(int (a)=(b);(a)>(c);--(a))
 #define dbg(x) cout << #x << "=" << x << endl
 using namespace std;
-const int maxn = 1e5+5;
+const int maxn = 1e3+5;
 typedef long long ll;
 typedef double db;
 const int inf = INT_MAX;
@@ -43,10 +43,61 @@ int Read() {
     while (C >= '0' && C <= '9') { x = x * 10 - '0' + C, C = getchar(); }
     return x * F;
 }
+vector<int>G[maxn];
+int ans = 0;
+int low[maxn];
+int dfn[maxn];
+int id,n;
+bool vis[maxn];
+
+void dfs(int u){
+    low[u] = dfn[u] = ++id;
+    int ch = 0;
+    for(int i=0;i<G[u].size();i++){
+        int v = G[u][i];
+        if(!dfn[v]){
+            dfs(v);
+            ch++;
+            if(low[v]>=dfn[u]&&u!=1) vis[u] = 1;
+            low[u] = min(low[v],low[u]);
+        }
+        else low[u] = min(low[u],dfn[v]);
+
+    }
+    if(u==1&&ch>=2) vis[1] = true;
+}
+void init(int n){
+    for(int i=1;i<=n;i++) G[i].clear();
+    CLR(dfn);
+    CLR(low);
+    CLR(vis);
+}
 int main(){
     #ifdef ONLINE_JUDGE
     #else
         FILEIN;
     #endif
-    cout << int(4.7) <<endl;
+
+    while(~scanf("%d",&n)){
+        if(!n) break;
+        init(n);
+        int a;
+        while(scanf("%d",&a)&&a)
+        {
+
+            while(getchar()!='\n')
+            {
+                int b;
+                scanf("%d",&b);
+                G[a].push_back(b);
+                G[b].push_back(a);
+            }
+        }
+        ans = 0;
+        dfs(1);
+        for(int i=1;i<=n;i++)
+            ans +=vis[i];
+        cout << ans <<endl;
+
+    }
 }

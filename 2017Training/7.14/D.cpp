@@ -9,14 +9,15 @@
 #include<stack>
 #include<climits>
 #include<ctime>
+#include<set>
 #include<queue>
 #define FILEIN freopen("in.txt", "r", stdin)
 #define FILEOUT freopen("out.txt", "w", stdout)
 #define CLOSEIO ios::sync_with_stdio(false)
 #define PI acos(-1)
 #define CLR(a) memset(a,0,sizeof(a))
-#define MEM(a,x) memset(a,x,sizeof(a))
-#define eps 1e-8
+#define MEM(a,x) memset(a,x,sizoef(a))
+#define eps 1e-5
 #define sf(x) scanf("%d",&x)
 #define PB(x) push_back(x)
 #define MP(x, y) make_pair(x, y)
@@ -27,8 +28,7 @@
 #define drep(a,b,c) for(int (a)=(b);(a)>(c);--(a))
 #define dbg(x) cout << #x << "=" << x << endl
 using namespace std;
-#define LOCAL
-const int maxn = 5e5+5;
+const int maxn = 1e4+5;
 typedef long long ll;
 typedef double db;
 const int inf = INT_MAX;
@@ -44,49 +44,39 @@ int Read() {
     while (C >= '0' && C <= '9') { x = x * 10 - '0' + C, C = getchar(); }
     return x * F;
 }
-//int a[maxn],b[maxn];
-int a[40];
-ll dp[20][2000][20];
-ll dfs(int cnt,ll tot,int mid,int limit){
-    if(cnt<0) return !tot;
-    if(tot<0) return 0;
-    if(!limit&&dp[cnt][tot][mid]!=-1) return dp[cnt][tot][mid];
-    ll ans = 0;
-    int up = limit?a[cnt]:9;
-    for(int i=0;i<=up;i++){
-        ll ntot = tot + (cnt-mid)*i;
-        ans += dfs(cnt-1,ntot,mid,limit&&i==up);
-    }
-    if(!limit) dp[cnt][tot][mid] = ans;
-    return ans;
-
+// C
+struct good{
+    int v,d;
+}a[maxn];
+int vis[maxn];
+bool cmp(good a,good b){
+    if(a.v==b.v) return a.d < b.d;
+    else return a.v>b.v;
 }
-ll getsum(ll x){
-    int cnt = 0;
-    while(x){
-        a[cnt++] = x%10;
-        x/=10;
-    }
-    ll res = 0;
-    int pos = cnt;
-    for(int i = 0; i < cnt; i++){
-        res += dfs(pos-1,0,i,1);
-    }
-    return res-(pos-1);
-
-}
-int main(){
-    #ifdef ONLINE_JUDGE
-    #else
-      //FILEIN;
-    #endif
+int main()
+{
     int n;
-    MEM(dp,-1);
-    ll l, r;
-    int t =Read();while(t--){
-    scanf("%I64d %I64d",&l,&r);
-    cout <<getsum(r) - getsum(l-1) << endl;
+    int maxx = -1;
+    while(~scanf("%d",&n)){
+        maxx = -1;
+        CLR(vis);
+        for(int i=0;i<n;i++){
+            scanf("%d %d",&a[i].v,&a[i].d);
+            maxx = max(maxx,a[i].d);
+        }
+        ll ans = 0;
+        sort(a,a+n,cmp);
+        for(int i=0;i<n;i++){
+            for(int j=a[i].d;j>=1;j--){
+                if(!vis[j]){
+                    vis[j]=1;
+                    ans+=a[i].v;
+                    break;
+                }
+            }
+        }
+        cout << ans << endl;
     }
-
-
 }
+
+

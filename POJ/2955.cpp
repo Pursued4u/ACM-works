@@ -38,15 +38,37 @@ ll q_mul(ll a, ll b){ ll ans = 0;while(b){if(b & 1){ans=(ans+a)%mod;} b>>=1;a=(a
 ll q_pow(ll x , ll y){ll res=1;while(y){if(y&1) res=q_mul(res,x) ; y>>=1 ; x=q_mul(x,x);} return res;}
 ll inv(ll x) { return q_pow(x, mod-2); }
 int Read() {
+
     int x = 0, F = 1; char C = getchar();
     while (C < '0' || C > '9') { if (C == '-') F = -F; C = getchar(); }
     while (C >= '0' && C <= '9') { x = x * 10 - '0' + C, C = getchar(); }
     return x * F;
 }
+int dp[105][105];
+int a[105];
 int main(){
+
     #ifdef ONLINE_JUDGE
     #else
         FILEIN;
     #endif
-    cout << int(4.7) <<endl;
+    int n = Read();
+    for(int i=0;i<n;i++){
+        scanf("%d",&a[i]);
+    }
+    for(int i=0;i<n;i++){
+        for(int j=0;j<n;j++){
+            if(j==i+1) dp[i][j] = 0;
+            else dp[i][j]=inf;
+        }
+    }
+    for(int l = 3;l <= n; l++){
+        for(int j = 0,k = j+l-1;k<n;j++,k++){
+            for(int i=j+1;i<=k-1;i++){
+                dp[j][k] = min(dp[j][k],dp[j][i]+dp[i][k]+a[i]*a[j]*a[k]);
+            }
+        }
+    }
+    cout << dp[0][n-1] << endl;
+
 }

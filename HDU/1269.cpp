@@ -27,7 +27,8 @@
 #define drep(a,b,c) for(int (a)=(b);(a)>(c);--(a))
 #define dbg(x) cout << #x << "=" << x << endl
 using namespace std;
-const int maxn = 1e5+5;
+const int maxn = 1e4+5;
+
 typedef long long ll;
 typedef double db;
 const int inf = INT_MAX;
@@ -43,10 +44,78 @@ int Read() {
     while (C >= '0' && C <= '9') { x = x * 10 - '0' + C, C = getchar(); }
     return x * F;
 }
+struct Edge{
+    int to,next;
+}edge[maxn*10];
+int head[maxn];
+int tot;
+int low[maxn],dfn[maxn],belong[maxn];
+int index;
+int scc;
+bool vis[maxn];
+int num[maxn];
+void addedge(int u,int v){
+    edge[tot].to = v;
+    edge[tot].next = head[u];
+    head[u] = tot++;
+}
+stack<int>st;
+void tarjan(int u){
+    int v;
+    low[u] = dfn[u] = ++index;
+    st.push(u);
+    vis[u] = 1;
+    for(int i=head[u];i!=-1;i = edge[i].next){
+        v = edge[i].to;
+        if(!dfn[v]){
+            tarjan(v);
+            low[u] = min(low[u],low[v]);
+        }
+        else if(vis[v]&&low[u] > dfn[v]){
+            low[u] = dfn[v];
+        }
+    }
+    if(low[u] == dfn[u]){
+        scc++;
+        while(u!=v){
+            v = st.top();
+            st.pop();
+            vis[v] = 0;
+            belong[v] = scc;
+            num[scc]++;
+        }
+    }
+}
+void init(){
+    tot = 0;
+    MEM(head,-1);
+    CLR(dfn);CLR(vis);
+    CLR(num);
+    scc = index = 0;
+    while(st.size()){
+        st.pop();
+    }
+}
 int main(){
     #ifdef ONLINE_JUDGE
     #else
         FILEIN;
     #endif
-    cout << int(4.7) <<endl;
+    int m,n;
+    while(scanf("%d %d",&m,&n)&&m){
+        init();
+        for(int i=0;i<n;i++){
+            int u = Read();
+            int v = Read();
+            addedge(u,v);
+        }
+        for(int i=1;i<=m;i++){
+            if(!dfn[i]) tarjan(i);
+        }
+        if(scc==1){
+            cout << "Yes" <<endl;
+        }
+        else cout << "No" << endl;
+    }
+
 }

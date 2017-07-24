@@ -15,7 +15,7 @@
 #define CLOSEIO ios::sync_with_stdio(false)
 #define PI acos(-1)
 #define CLR(a) memset(a,0,sizeof(a))
-#define MEM(a,x) memset(a,x,sizeof(a))
+#define MEM(a,x) memset(a,x,sizoef(a))
 #define eps 1e-8
 #define sf(x) scanf("%d",&x)
 #define PB(x) push_back(x)
@@ -27,8 +27,7 @@
 #define drep(a,b,c) for(int (a)=(b);(a)>(c);--(a))
 #define dbg(x) cout << #x << "=" << x << endl
 using namespace std;
-#define LOCAL
-const int maxn = 5e5+5;
+const int maxn = 1e5+5;
 typedef long long ll;
 typedef double db;
 const int inf = INT_MAX;
@@ -44,49 +43,56 @@ int Read() {
     while (C >= '0' && C <= '9') { x = x * 10 - '0' + C, C = getchar(); }
     return x * F;
 }
-//int a[maxn],b[maxn];
-int a[40];
-ll dp[20][2000][20];
-ll dfs(int cnt,ll tot,int mid,int limit){
-    if(cnt<0) return !tot;
-    if(tot<0) return 0;
-    if(!limit&&dp[cnt][tot][mid]!=-1) return dp[cnt][tot][mid];
-    ll ans = 0;
-    int up = limit?a[cnt]:9;
-    for(int i=0;i<=up;i++){
-        ll ntot = tot + (cnt-mid)*i;
-        ans += dfs(cnt-1,ntot,mid,limit&&i==up);
-    }
-    if(!limit) dp[cnt][tot][mid] = ans;
-    return ans;
-
-}
-ll getsum(ll x){
-    int cnt = 0;
+int num[maxn];
+int js[10];
+int tot[10];
+void get(int x){
     while(x){
-        a[cnt++] = x%10;
+        js[x%10]++;
         x/=10;
     }
-    ll res = 0;
-    int pos = cnt;
-    for(int i = 0; i < cnt; i++){
-        res += dfs(pos-1,0,i,1);
-    }
-    return res-(pos-1);
-
 }
-int main(){
-    #ifdef ONLINE_JUDGE
-    #else
-      //FILEIN;
-    #endif
-    int n;
-    MEM(dp,-1);
-    ll l, r;
-    int t =Read();while(t--){
-    scanf("%I64d %I64d",&l,&r);
-    cout <<getsum(r) - getsum(l-1) << endl;
+int main()
+{
+    int t = Read();
+    while(t--){
+        CLR(js);
+        CLR(tot);
+        int a,b,c;
+        a = Read();
+        b = Read();
+        c = Read();
+
+        int cnt = 0;
+        for(int i=1;i*i*a+i*b<=c;i++){
+            num[cnt++] = i*i*a+i*b;
+        }
+        if(cnt==0){
+            cout << -1 << endl;
+            continue;
+        }
+        for(int i=0;i<cnt;i++){
+            CLR(js);
+            get(num[i]);
+            int maxx = -1;
+            for(int i=0;i<10;i++){
+                maxx = max(maxx,js[i]);
+            }
+            for(int i=0;i<10;i++){
+                if(js[i]==maxx)
+                tot[i]++;
+            }
+        }
+        int maxxx=-1;
+        for(int i=0;i<10;i++){
+            maxxx = max(maxxx,tot[i]);
+        }
+        for(int i=0;i<10;i++){
+            if(tot[i]==maxxx)
+            {
+                cout << i << endl;
+                break;
+            }
+        }
     }
-
-
 }

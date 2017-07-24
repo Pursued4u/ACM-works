@@ -7,8 +7,6 @@
 #include<cmath>
 #include<vector>
 #include<stack>
-#include<climits>
-#include<ctime>
 #include<queue>
 #define FILEIN freopen("in.txt", "r", stdin)
 #define FILEOUT freopen("out.txt", "w", stdout)
@@ -30,8 +28,6 @@ using namespace std;
 const int maxn = 1e5+5;
 typedef long long ll;
 typedef double db;
-const int inf = INT_MAX;
-const ll INF = LLONG_MAX;
 const ll mod = 1e9 + 7;
 ll mul(ll x,ll y){return x*y%mod;}
 ll q_mul(ll a, ll b){ ll ans = 0;while(b){if(b & 1){ans=(ans+a)%mod;} b>>=1;a=(a+a) % mod;}return ans;}
@@ -43,10 +39,57 @@ int Read() {
     while (C >= '0' && C <= '9') { x = x * 10 - '0' + C, C = getchar(); }
     return x * F;
 }
-int main(){
-    #ifdef ONLINE_JUDGE
-    #else
-        FILEIN;
-    #endif
-    cout << int(4.7) <<endl;
+
+ll dp[20][1<<11][11];
+int a[20];
+int update(int x,int now){
+    for(int i=x+1;i<10;i++){
+        if(now&(1<<i)) return now^(1<<i)|(1<<x);
+    }
+    return now|1<<x;
 }
+int getk(int x){
+    int cnt = 0;
+    while(x){
+        x = x&(x-1);
+        cnt++;
+    }
+    return cnt;
+
+}
+int k;
+ll l,r;
+ll dfs(int pos,int st,int z,int limit){
+    if(pos<0) return getk(st)==k;
+    if(!limit&&dp[pos][st][k]!=-1) return dp[pos][st][k];
+    int up = limit?a[pos]:9;
+    ll res = 0;
+    for(int i=0;i<=up;i++){
+        int nz = z||i;
+        int nst = nz?update(i,st):0;
+        res += dfs(pos-1,nst,nz,limit&&i==up);
+    }
+    if(!limit) dp[pos][st][k] = res;
+    return res;
+}
+ll getsum(ll x){
+    int pos = 0;
+    while(x){
+        a[pos++] = x%10;
+        x/=10;
+    }
+    return dfs(pos-1,0,0,1);
+}
+int main(){
+    int t = Read();
+    MEM(dp,-1);
+    int ca = 1;
+    while(t--){
+
+        scanf("%I64d %I64d %d",&l,&r,&k);
+        printf("Case #%d: ",ca++);
+        cout << getsum(r)- getsum(l-1) <<endl;
+    }
+}
+
+

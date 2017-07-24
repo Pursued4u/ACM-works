@@ -80,6 +80,7 @@ void init(){
     for(int i=1;i<=2520;i++){
         if(!(LCM%i)) ind[i] = num++;
     }
+    cout << num <<endl;
 }
 int main(){
     int t;cin >> t;

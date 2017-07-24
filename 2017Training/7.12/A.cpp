@@ -15,7 +15,7 @@
 #define CLOSEIO ios::sync_with_stdio(false)
 #define PI acos(-1)
 #define CLR(a) memset(a,0,sizeof(a))
-#define MEM(a,x) memset(a,x,sizeof(a))
+#define MEM(a,x) memset(a,x,sizoef(a))
 #define eps 1e-8
 #define sf(x) scanf("%d",&x)
 #define PB(x) push_back(x)
@@ -27,8 +27,7 @@
 #define drep(a,b,c) for(int (a)=(b);(a)>(c);--(a))
 #define dbg(x) cout << #x << "=" << x << endl
 using namespace std;
-#define LOCAL
-const int maxn = 5e5+5;
+const int maxn = 2e5+5;
 typedef long long ll;
 typedef double db;
 const int inf = INT_MAX;
@@ -44,49 +43,38 @@ int Read() {
     while (C >= '0' && C <= '9') { x = x * 10 - '0' + C, C = getchar(); }
     return x * F;
 }
-//int a[maxn],b[maxn];
-int a[40];
-ll dp[20][2000][20];
-ll dfs(int cnt,ll tot,int mid,int limit){
-    if(cnt<0) return !tot;
-    if(tot<0) return 0;
-    if(!limit&&dp[cnt][tot][mid]!=-1) return dp[cnt][tot][mid];
-    ll ans = 0;
-    int up = limit?a[cnt]:9;
-    for(int i=0;i<=up;i++){
-        ll ntot = tot + (cnt-mid)*i;
-        ans += dfs(cnt-1,ntot,mid,limit&&i==up);
-    }
-    if(!limit) dp[cnt][tot][mid] = ans;
-    return ans;
+char s[maxn];
+vector<int>v,g;
+int main()
+{
+    int t = Read();
+    while(t--){
+        v.clear();
+        g.clear();
+        int n = Read();
+        scanf("%s",s+1);
+        v.push_back(0);
+        for(int i=1;i<=n;i++) if(s[i]=='1') v.push_back(i);
+        v.push_back(n+1);
+        for(int i=1;i<v.size();i++){
+            g.push_back(v[i]-v[i-1]);
+        }
+        ll even,odd,res;
+        res = even = odd = 0;
+        for(int i=0;i<g.size();i++){
+            if(i&1)odd +=g[i];
+            else even+=g[i];
+        }
+        for(int i=0;i<g.size()-1;i++){
+            ll tmp = 0;
+            if(!i)  tmp = odd;
+            else{
+                if(i&1) tmp = even-=g[i-1];
+                else tmp = odd-=g[i-1];
+            }
+            res+=g[i]*tmp-g[i]-g[i+1]+1;
 
-}
-ll getsum(ll x){
-    int cnt = 0;
-    while(x){
-        a[cnt++] = x%10;
-        x/=10;
+        }
+        cout <<res <<endl;
     }
-    ll res = 0;
-    int pos = cnt;
-    for(int i = 0; i < cnt; i++){
-        res += dfs(pos-1,0,i,1);
-    }
-    return res-(pos-1);
-
-}
-int main(){
-    #ifdef ONLINE_JUDGE
-    #else
-      //FILEIN;
-    #endif
-    int n;
-    MEM(dp,-1);
-    ll l, r;
-    int t =Read();while(t--){
-    scanf("%I64d %I64d",&l,&r);
-    cout <<getsum(r) - getsum(l-1) << endl;
-    }
-
-
 }

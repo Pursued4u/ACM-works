@@ -43,10 +43,59 @@ int Read() {
     while (C >= '0' && C <= '9') { x = x * 10 - '0' + C, C = getchar(); }
     return x * F;
 }
+struct Matrix{
+    ll mat[3][3];
+
+};
+Matrix operator *(Matrix A,Matrix B){
+    Matrix C; CLR(C.mat);
+    for(int i=0;i<2;i++){
+        for(int j=0;j<2;j++){
+            for(int k=0;k<2;k++){
+                C.mat[j][i] = (C.mat[j][i]+(A.mat[j][k]*B.mat[k][i])%mod)%mod;
+            }
+        }
+    }
+    return C;
+}
+Matrix operator ^(Matrix A,ll b){
+    Matrix c;CLR(c.mat);
+    for(int i=0;i<2;i++){
+        for(int j=0;j<2;j++){
+            c.mat[i][j] = (i==j);
+        }
+    }
+    while(b){
+        if(b&1){
+            c = A * c;
+        }
+     b>>=1;
+     A = A * A;
+    }
+    return c;
+}
 int main(){
     #ifdef ONLINE_JUDGE
     #else
         FILEIN;
     #endif
-    cout << int(4.7) <<endl;
+    int t;
+    cin >> t;
+    while(t--){
+        Matrix res;
+        Matrix tmp;
+        CLR(res.mat);
+        CLR(tmp.mat);
+        res.mat[0][0]=7;
+        res.mat[0][1]=12;
+        res.mat[1][0]=4;
+        res.mat[1][1]=7;
+        int n = Read();
+        if(!n) {cout << 1 << endl;continue;}
+        tmp = res^n;
+        ll ans = ((tmp.mat[0][0]*2)%mod-1+mod)%mod;
+        cout << ans << endl;
+
+
+    }
 }

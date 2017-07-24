@@ -10,12 +10,12 @@
 #include<climits>
 #include<ctime>
 #include<queue>
-#define FILEIN freopen("in.txt", "r", stdin)
-#define FILEOUT freopen("out.txt", "w", stdout)
+#define FILEIN freopen("binary.in", "r", stdin)
+#define FILEOUT freopen("binary.out", "w", stdout)
 #define CLOSEIO ios::sync_with_stdio(false)
 #define PI acos(-1)
 #define CLR(a) memset(a,0,sizeof(a))
-#define MEM(a,x) memset(a,x,sizeof(a))
+#define MEM(a,x) memset(a,x,sizoef(a))
 #define eps 1e-8
 #define sf(x) scanf("%d",&x)
 #define PB(x) push_back(x)
@@ -27,8 +27,7 @@
 #define drep(a,b,c) for(int (a)=(b);(a)>(c);--(a))
 #define dbg(x) cout << #x << "=" << x << endl
 using namespace std;
-#define LOCAL
-const int maxn = 5e5+5;
+const int maxn = 1e5+5;
 typedef long long ll;
 typedef double db;
 const int inf = INT_MAX;
@@ -44,49 +43,56 @@ int Read() {
     while (C >= '0' && C <= '9') { x = x * 10 - '0' + C, C = getchar(); }
     return x * F;
 }
-//int a[maxn],b[maxn];
-int a[40];
-ll dp[20][2000][20];
-ll dfs(int cnt,ll tot,int mid,int limit){
-    if(cnt<0) return !tot;
-    if(tot<0) return 0;
-    if(!limit&&dp[cnt][tot][mid]!=-1) return dp[cnt][tot][mid];
-    ll ans = 0;
-    int up = limit?a[cnt]:9;
-    for(int i=0;i<=up;i++){
-        ll ntot = tot + (cnt-mid)*i;
-        ans += dfs(cnt-1,ntot,mid,limit&&i==up);
-    }
-    if(!limit) dp[cnt][tot][mid] = ans;
-    return ans;
-
-}
-ll getsum(ll x){
-    int cnt = 0;
+string tobinary(int x){
+    string s="";
+    if(!x) return s="0";
     while(x){
-        a[cnt++] = x%10;
-        x/=10;
+        s+=x%2+'0';
+        x/=2;
     }
-    ll res = 0;
-    int pos = cnt;
-    for(int i = 0; i < cnt; i++){
-        res += dfs(pos-1,0,i,1);
-    }
-    return res-(pos-1);
-
+    return s;
 }
-int main(){
-    #ifdef ONLINE_JUDGE
-    #else
-      //FILEIN;
-    #endif
+int main()
+{
+   // FILEIN;
+    //FILEOUT;
     int n;
-    MEM(dp,-1);
-    ll l, r;
-    int t =Read();while(t--){
-    scanf("%I64d %I64d",&l,&r);
-    cout <<getsum(r) - getsum(l-1) << endl;
+    int a = 1;
+    scanf("%d",&n);
+
+    while(a<n){
+        a*=2;
     }
-
-
+    if(a!=n){
+    int cnt = a-n;
+    int b = a/2;
+    string cmp = tobinary(b);
+    for(int i=0;i<cnt;i++){
+        string p = tobinary(i);
+        while(p.length()!=cmp.length()-1){
+            p+='0';
+        }
+        reverse(p.begin(),p.end());
+        cout << p << "\n";
+    }
+    for(int i=2*a-2*n;i<a;i++){
+        string p = tobinary(i);
+        while(p.length()<cmp.length()){
+            p+='0';
+        }
+        reverse(p.begin(),p.end());
+        cout << p << "\n";
+    }
+    }
+    else{
+        string cmp = tobinary(n-1);
+        for(int i=0;i<n;i++){
+            string p = tobinary(i);
+            while(p.length()!=cmp.length()){
+            p+='0';
+        }
+            reverse(p.begin(),p.end());
+            cout << p<<endl;
+        }
+    }
 }

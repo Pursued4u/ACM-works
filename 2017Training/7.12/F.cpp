@@ -6,6 +6,7 @@
 #include<map>
 #include<cmath>
 #include<vector>
+#include<set>
 #include<stack>
 #include<climits>
 #include<ctime>
@@ -15,7 +16,7 @@
 #define CLOSEIO ios::sync_with_stdio(false)
 #define PI acos(-1)
 #define CLR(a) memset(a,0,sizeof(a))
-#define MEM(a,x) memset(a,x,sizeof(a))
+#define MEM(a,x) memset(a,x,sizoef(a))
 #define eps 1e-8
 #define sf(x) scanf("%d",&x)
 #define PB(x) push_back(x)
@@ -27,8 +28,7 @@
 #define drep(a,b,c) for(int (a)=(b);(a)>(c);--(a))
 #define dbg(x) cout << #x << "=" << x << endl
 using namespace std;
-#define LOCAL
-const int maxn = 5e5+5;
+const int maxn = 1e5+5;
 typedef long long ll;
 typedef double db;
 const int inf = INT_MAX;
@@ -44,49 +44,57 @@ int Read() {
     while (C >= '0' && C <= '9') { x = x * 10 - '0' + C, C = getchar(); }
     return x * F;
 }
-//int a[maxn],b[maxn];
-int a[40];
-ll dp[20][2000][20];
-ll dfs(int cnt,ll tot,int mid,int limit){
-    if(cnt<0) return !tot;
-    if(tot<0) return 0;
-    if(!limit&&dp[cnt][tot][mid]!=-1) return dp[cnt][tot][mid];
-    ll ans = 0;
-    int up = limit?a[cnt]:9;
-    for(int i=0;i<=up;i++){
-        ll ntot = tot + (cnt-mid)*i;
-        ans += dfs(cnt-1,ntot,mid,limit&&i==up);
+set<int>st;
+int cnt[maxn];
+struct node{
+    int p,id,op;
+    node(){}
+    node(int _p,int _id,int _op){
+        p= _p;
+        id = _id;
+        op = _op;
     }
-    if(!limit) dp[cnt][tot][mid] = ans;
-    return ans;
-
+}a[2*maxn];
+bool cmp(node a,node b){
+    return a.p < b.p;
 }
-ll getsum(ll x){
-    int cnt = 0;
-    while(x){
-        a[cnt++] = x%10;
-        x/=10;
-    }
-    ll res = 0;
-    int pos = cnt;
-    for(int i = 0; i < cnt; i++){
-        res += dfs(pos-1,0,i,1);
-    }
-    return res-(pos-1);
+int po[maxn];
+int main()
+{
+    int t = Read();
+    while(t--){
+        int m = Read();
+        int n = Read();
+        int num = 0;
+        CLR(cnt);
+        st.clear();
+        for(int i=1;i<=n;i++){
+            int x,y,z;
+            x = Read();
+            y = Read();
+            z = Read();
+            po[i] = y;
+            a[num++] = node(max(1,x-z),i,1);
+            a[num++] = node(min(m+1,x+z+1),i,-1);
+        }
+        sort(a,a+num,cmp);
+        int ans = 0;
+        for(int i=1,j=0;i<=m;i++){
+            for(;j<num&&a[j].p==i;j++){
+                int id = a[j].id;
+                int op = a[j].op;
+                cnt[po[id]]+=op;
+                if(op>0) st.insert(id);
+                else st.erase(st.find(id));
+            }
+            if(st.empty()) ans++;
+            else{
+                auto it = st.end();
+                if(cnt[po[*--it]]>1)
+                    ans++;
+            }
+        }
+        cout << ans <<endl;
 
-}
-int main(){
-    #ifdef ONLINE_JUDGE
-    #else
-      //FILEIN;
-    #endif
-    int n;
-    MEM(dp,-1);
-    ll l, r;
-    int t =Read();while(t--){
-    scanf("%I64d %I64d",&l,&r);
-    cout <<getsum(r) - getsum(l-1) << endl;
     }
-
-
 }
