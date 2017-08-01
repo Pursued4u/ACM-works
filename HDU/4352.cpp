@@ -43,7 +43,7 @@ int Read() {
 ll dp[20][1<<11][11];
 int a[20];
 int update(int x,int now){
-    for(int i=x+1;i<10;i++){
+    for(int i=x;i<10;i++){
         if(now&(1<<i)) return now^(1<<i)|(1<<x);
     }
     return now|1<<x;

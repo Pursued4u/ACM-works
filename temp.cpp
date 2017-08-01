@@ -48,5 +48,4 @@ int main(){
     #else
         FILEIN;
     #endif
-    cout << int(4.7) <<endl;
 }

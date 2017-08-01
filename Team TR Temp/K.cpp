@@ -6,6 +6,7 @@
 #include<map>
 #include<cmath>
 #include<vector>
+#include<set>
 #include<stack>
 #include<climits>
 #include<ctime>
@@ -37,12 +38,6 @@ ll mul(ll x,ll y){return x*y%mod;}
 ll q_mul(ll a, ll b){ ll ans = 0;while(b){if(b & 1){ans=(ans+a)%mod;} b>>=1;a=(a+a) % mod;}return ans;}
 ll q_pow(ll x , ll y){ll res=1;while(y){if(y&1) res=q_mul(res,x) ; y>>=1 ; x=q_mul(x,x);} return res;}
 ll inv(ll x) { return q_pow(x, mod-2); }
-int Read() {
-    int x = 0, F = 1; char C = getchar();
-    while (C < '0' || C > '9') { if (C == '-') F = -F; C = getchar(); }
-    while (C >= '0' && C <= '9') { x = x * 10 - '0' + C, C = getchar(); }
-    return x * F;
-}
 int main()
 {
 
