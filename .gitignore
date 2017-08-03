@@ -4,4 +4,5 @@ ut/
 !.gitignore
 !*.cpp
 !*.java
-!*.md
+!*.md 
+Teamwork/*
