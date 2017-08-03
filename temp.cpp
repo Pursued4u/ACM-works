@@ -42,10 +42,11 @@ int Read() {
     while (C < '0' || C > '9') { if (C == '-') F = -F; C = getchar(); }
     while (C >= '0' && C <= '9') { x = x * 10 - '0' + C, C = getchar(); }
     return x * F;
+
 }
 int main(){
-    #ifdef ONLINE_JUDGE
-    #else
+
+    #ifndef ONLINE_JUDGE
         FILEIN;
     #endif
 }

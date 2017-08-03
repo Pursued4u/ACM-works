@@ -33,50 +33,103 @@ typedef double db;
 const int inf = INT_MAX;
 const ll INF = LLONG_MAX;
 const ll mod = 1e9 + 7;
-ll mul(ll x,ll y){return x*y%mod;}
-ll q_mul(ll a, ll b){ ll ans = 0;while(b){if(b & 1){ans=(ans+a)%mod;} b>>=1;a=(a+a) % mod;}return ans;}
-ll q_pow(ll x , ll y){ll res=1;while(y){if(y&1) res=q_mul(res,x) ; y>>=1 ; x=q_mul(x,x);} return res;}
-ll inv(ll x) { return q_pow(x, mod-2); }
-int Read() {
-    int x = 0, F = 1; char C = getchar();
-    while (C < '0' || C > '9') { if (C == '-') F = -F; C = getchar(); }
-    while (C >= '0' && C <= '9') { x = x * 10 - '0' + C, C = getchar(); }
+ll mul(ll x,ll y)
+{
+    return x*y%mod;
+}
+ll q_mul(ll a, ll b)
+{
+    ll ans = 0;
+    while(b)
+    {
+        if(b & 1)
+        {
+            ans=(ans+a)%mod;
+        }
+        b>>=1;
+        a=(a+a) % mod;
+    }
+    return ans;
+}
+ll q_pow(ll x, ll y)
+{
+    ll res=1;
+    while(y)
+    {
+        if(y&1) res=q_mul(res,x) ;
+        y>>=1 ;
+        x=q_mul(x,x);
+    }
+    return res;
+}
+ll inv(ll x)
+{
+    return q_pow(x, mod-2);
+}
+int Read()
+{
+    int x = 0, F = 1;
+    char C = getchar();
+    while (C < '0' || C > '9')
+    {
+        if (C == '-') F = -F;
+        C = getchar();
+    }
+    while (C >= '0' && C <= '9')
+    {
+        x = x * 10 - '0' + C, C = getchar();
+    }
     return x * F;
 }
 
-int a[12][105][105];
-int b[12][105][105];
+
+struct Point
+{
+    int x, y;
+} p[maxn];
+
+int n, q, c;
+int s;
+ll a[15][105][105];
+ll sum[11][105][105];
+ll getsum(int t, int x1, int y1, int x2, int y2)
+{
+    ll res = 0;
+    t %= (c + 1);
+    for(int i=0;i<=c;i++){
+        res+=((i+t)%(c+1))*(sum[i][x2][y2]-sum[i][x1-1][y2]+sum[i][x1-1][y1-1]-sum[i][x2][y1-1]);
+    }
+    return res;
+}
+
 
 int main()
 {
-    int n, q, c;
     scanf("%d%d%d", &n, &q, &c);
-    c++;
-    for(int i=0;i<n;i++)
-     {
-        int x, y, s;
-        x = Read();
-        y = Read();
-        s = Read();
-        a[i][x][y] = s;
-        for (int i = 1; i < c; i++){
-            a[i][x][y] = (a[i - 1][x][y] + 1) % c;
-        }
+    for(int i = 1; i <= n; i++)
+    {
+        scanf("%d%d%d", &p[i].x, &p[i].y, &s);
+        a[s][p[i].x][p[i].y]++;
     }
-    for (int i = 0; i < c; i++){
-        for (int j = 1; j <= 100; j++){
-            for (int k = 1; k <= 100; k++) {
-                b[i][j][k] = a[i][j][k] + b[i][j - 1][k] + b[i][j][k - 1] - b[i][j - 1][k - 1];
+    for(int i = 0; i <= c; i++)
+    {
+        for(int ii = 1; ii <= 100; ii++)
+        {
+            for(int jj = 1; jj <= 100; jj++)
+            {
+                sum[i][ii][jj] = sum[i][ii][jj - 1] + sum[i][ii - 1][jj]-sum[i][ii-1][jj-1] + a[i][ii][jj];
             }
         }
     }
-    for(int i=0;i<q;i++)
+    for(int i = 1; i <= q; i++)
     {
         int t, x1, y1, x2, y2;
-        scanf("%d%d%d%d%d", &t, &x1, &y1, &x2, &y2);
-        int k = t%c;
-        int ans = b[k][x2][y2] - b[k][x2][y1 - 1] - b[k][x1 - 1][y2] + b[k][x1 - 1][y1 - 1];
-        printf("%d\n", ans);
+        t = Read();
+        x1 = Read();
+        y1 = Read();
+        x2 = Read();
+        y2= Read();
+        printf("%I64d\n", getsum(t, x1, y1, x2, y2));
     }
     return 0;
 }
