@@ -27,8 +27,7 @@
 #define drep(a,b,c) for(int (a)=(b);(a)>(c);--(a))
 #define dbg(x) cout << #x << "=" << x << endl
 using namespace std;
-#define LOCAL
-const int maxn = 5e5+5;
+const int maxn = 1e5+5;
 typedef long long ll;
 typedef double db;
 const int inf = INT_MAX;
@@ -44,22 +43,44 @@ int Read() {
     while (C >= '0' && C <= '9') { x = x * 10 - '0' + C, C = getchar(); }
     return x * F;
 }
+int sgn(db x){ return x<-eps?-1:x>eps?1:0 ;}
+
 struct point{
     int x,y;
-    Point(int _x = 0;int _y = 0){
+    point(int _x = 0,int _y = 0){
         x = _x;
         y = _y;
     }
     point operator -(const point &b){
         return point(x-b.x,y-b.y);
     }
-    point operator ^(const point &b){
-        return point(x*b.y-y*b.x);
+    ll operator ^(const point &b){
+        return (x*b.y-y*b.x);
     }
-    point operator *(const point &b){
-        return point(x*b.x+y*b.y);
+    ll operator *(const point &b){
+        return (x*b.x+y*b.y);
     }
+	bool operator == (const point &b){
+		return !sgn(b.x-x)&&!sgn(b.y-y);
+	}
 };
 db Dis(point a,point b){
     return (a-b)*(a-b);
 }
+
+bool cmp(point a,point b){
+	return a.x<b.x||(a.x==b.x&&a.y<b.y);
+}
+
+
+int main(){
+	point a,b;
+	a.x = 1;
+	a.y = 1;
+	b.x = 2;
+	b.y = 2;
+	line c = b-a;
+	cout << c.x << " " << c.y << endl;
+}
+
+

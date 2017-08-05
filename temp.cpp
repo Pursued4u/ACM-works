@@ -26,6 +26,7 @@
 #define rep(a,b,c) for(int (a)=(b);(a)<(c);(a)++)
 #define drep(a,b,c) for(int (a)=(b);(a)>(c);--(a))
 #define dbg(x) cout << #x << "=" << x << endl
+#define _ixvii0iv
 using namespace std;
 const int maxn = 1e5+5;
 typedef long long ll;
@@ -49,4 +50,8 @@ int main(){
     #ifndef ONLINE_JUDGE
         FILEIN;
     #endif
+	int a,b;
+	while(scanf("%d %d",&a,&b)!=EOF){
+		printf("%d\n",a+b);
+	}
 }

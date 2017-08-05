@@ -7,10 +7,10 @@ struct point{
     point operator -(const point &b){
         return point(x-b.x,y-b.y);
     }
-    point operator ^(const point &b){
+    ll operator ^(const point &b){
         return (x*b.y-y*b.x);
     }
-    point operator *(const point &b){
+    ll operator *(const point &b){
         return (x*b.x+y*b.y);
     }
 };
@@ -47,9 +47,13 @@ void Graham(int n){
         top = 2;
         st[0] = 0;
         st[1] = 1;
+        return;
     }
+    top = 2;
+        st[0] = 0;
+        st[1] = 1;
     for(int i=2;i<n;i++){
-        while(top>1&&((p[st[top-1]]-p[st[top-2]])^(p[i]-[st[top-2]]))<=0)
+        while(top>1&&((p[st[top-1]]-p[st[top-2]])^(p[i]-p[st[top-2]]))<=0)
             top--;
         st[top++] = i;
     }

@@ -26,9 +26,9 @@
 #define rep(a,b,c) for(int (a)=(b);(a)<(c);(a)++)
 #define drep(a,b,c) for(int (a)=(b);(a)>(c);--(a))
 #define dbg(x) cout << #x << "=" << x << endl
+#define _ixvii0iv
 using namespace std;
-#define LOCAL
-const int maxn = 5e5+5;
+const int maxn = 1e3+5;
 typedef long long ll;
 typedef double db;
 const int inf = INT_MAX;
@@ -43,50 +43,62 @@ int Read() {
     while (C < '0' || C > '9') { if (C == '-') F = -F; C = getchar(); }
     while (C >= '0' && C <= '9') { x = x * 10 - '0' + C, C = getchar(); }
     return x * F;
-}
-//int a[maxn],b[maxn];
-int a[40];
-ll dp[20][2000][20];
-ll dfs(int cnt,ll tot,int mid,int limit){
-    if(cnt<0) return !tot;
-    if(tot<0) return 0;
-    if(!limit&&dp[cnt][tot][mid]!=-1) return dp[cnt][tot][mid];
-    ll ans = 0;
-    int up = limit?a[cnt]:9;
-    for(int i=0;i<=up;i++){
-        ll ntot = tot + (cnt-mid)*i;
-        ans += dfs(cnt-1,ntot,mid,limit&&i==up);
-    }
-    if(!limit) dp[cnt][tot][mid] = ans;
-    return ans;
 
 }
-ll getsum(ll x){
-    int cnt = 0;
-    while(x){
-        a[cnt++] = x%10;
-        x/=10;
-    }
-    ll res = 0;
-    int pos = cnt;
-    for(int i = 0; i < cnt; i++){
-        res += dfs(pos-1,0,i,1);
-    }
-    return res-(pos-1);
+struct point
+{
+    int v,co;
+    int id;
+}p[105];
 
-}
-int main(){
-    #ifdef ONLINE_JUDGE
-    #else
-      //FILEIN;
-    #endif
-    int n;
-    MEM(dp,-1);
-    ll l, r;
-    int t =Read();while(t--){
-    scanf("%I64d %I64d",&l,&r);
-    cout <<getsum(r) - getsum(l-1) << endl;
+int dp[1005];
+int vis[105][1100];
+int rk[101];
+int tot,n;
+int main()
+
+{
+    int t;
+    int ca = 1;
+    scanf("%d", &t);
+    while(t--)
+    {
+        CLR(dp);
+        CLR(vis);
+
+		scanf("%d %d",&tot,&n);
+		for(int i=1;i<=n;i++){
+			scanf("%d %d",&p[i].v,&p[i].co);
+		}
+        for(int i=1;i<=n;i++){
+            for(int j=tot;j>=p[i].co;j--){
+				if(dp[j-p[i].co]+p[i].v>dp[j]){
+					dp[j] = dp[j-p[i].co]+p[i].v;
+					vis[i][j] = 1;
+				}
+            }
+        }
+        int maxx = 0;
+        int ans =0;
+        int k = 0;
+        for(int i=n,j = tot;i>0;i--)
+		{
+            if(vis[i][j]){
+				maxx+=p[i].v;
+				ans +=p[i].co;
+				rk[k++] = i;
+				j -= p[i].co;
+            }
+        }
+		printf("Case #%d:\n", ca++);
+        printf("%d %d\n",maxx,ans);
+        sort(rk,rk+k);
+        for(int i=0;i<k;i++){
+			if(!i) cout <<rk[i];
+			else cout << " " << rk[i];
+			if(i==k-1) puts("");
+        }
+
+
     }
-
-
 }

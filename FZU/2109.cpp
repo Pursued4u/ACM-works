@@ -37,6 +37,7 @@ int Read() {
     int x = 0, F = 1; char C = getchar();
     while (C < '0' || C > '9') { if (C == '-') F = -F; C = getchar(); }
     while (C >= '0' && C <= '9') { x = x * 10 - '0' + C, C = getchar(); }
+
     return x * F;
 }
 
@@ -54,6 +55,7 @@ ll dfs(int pos,int pre,int odd,int fg, int limit){
     if(!limit) dp[pos][pre][fg][odd] = res;
     return res;
 }
+priori
 ll getsum(ll x){
     int pos = 0;
     while(x){

@@ -5,6 +5,10 @@ int Rank[maxn];
 int height[maxn];
 int sa[maxn];
 int r[maxn];
+int RMQ[maxn];
+int mm[maxn];
+int dp[maxn][20];
+
 bool cmp(int *r,int a,int b,int l){
     return r[a]==r[b]&&r[a+l] == r[b+l];
 }
@@ -40,4 +44,23 @@ void da(int str[],int sa[],int Rank[],int height[],int n,int m){
         while(str[i+k]==str[j+k])k++;
         height[Rank[i]] = k;
     }
+}
+void init_RMQ(int n){
+	int m = floor(log(n+0.0)/log(2.0));
+	for(int i=1;i<=n;i++) dp[i][0] = height[i];
+	for(int i=1;i<=m;i++){
+		for(int j=n;j;j--){
+			dp[j][i] = dp[j][i-1];
+			if(j+(1<<(i-1))<=n)
+				dp[j][i] = min(dp[j][i],dp[j+(1<<(i-1))][i-1]);
+		}
+	}
+}
+int query_RMQ(int l,int r){
+	int a = Rank[l];
+	int b = Rank[r];
+	if(a>b) swap(a,b);
+	a++;
+	int m = floor(log(b-a+1.0)/log(2.0));
+	return min(dp[a][m],dp[b-(1<<m)+1][m]);
 }

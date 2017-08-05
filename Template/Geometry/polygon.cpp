@@ -44,7 +44,7 @@ int Read() {
     while (C >= '0' && C <= '9') { x = x * 10 - '0' + C, C = getchar(); }
     return x * F;
 }
-const int MAXN=105;
+const int MAXN=1800;
 int m;
 double r;
 db area;
@@ -120,6 +120,7 @@ void solve(){
     }
    //多边形核的面积
 	area = 0;
+
     for(int i = 1; i <= curCnt; ++i){
         area += p[i].x * p[i + 1].y - p[i + 1].x * p[i].y;
 }
@@ -139,7 +140,7 @@ int main()
 	while(t--){
         cin>>m;
         for(int i=1;i<=m;i++)cin>>points[i].x>>points[i].y;
-       GuiZhengHua();
+       // GuiZhengHua();
         points[m+1]=points[1];
         solve();
         printf("%.2f\n",area);

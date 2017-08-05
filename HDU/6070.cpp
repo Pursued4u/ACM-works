@@ -46,19 +46,18 @@ int Read() {
 }
 int a[maxn];
 int n;
-int q;
-db mid;
+db midd;
 struct node{
     int l,r;
-    db minn,lazy;
+    db maxx,lazy;
     void update(db x){
-        sum+=ll(r-l+1)*x;
+        maxx+=x;
         lazy+=x;
     }
 }tree[maxn*4];
 
 void push_up(int x){
-    tree[x].sum = tree[x<<1].sum+tree[x<<1|1].sum;
+    tree[x].maxx = max( tree[x<<1].maxx,tree[x<<1|1].maxx);
 }
 void push_down(int x){
     int lazyval = tree[x].lazy;
@@ -70,9 +69,10 @@ void push_down(int x){
 }
 void build(int x,int l,int r){
     tree[x].l = l, tree[x].r =r;
-    tree[x].sum = tree[x].lazy = 0;
+    tree[x].maxx = tree[x].lazy = 0;
     if(l==r){
-        tree[x].sum = a[l];
+    	tree[x].maxx = db(r+1)*midd;
+		//dbg(tree[x].maxx);
     }
     else{
         int mid = l+r>>1;
@@ -95,21 +95,68 @@ void update(int x,int l,int r,ll v){
         push_up(x);
     }
 }
-ll query(int x,int l,int r){
+db query(int x,int l,int r){
     int L = tree[x].l;
     int R = tree[x].r;
     if(l<=L&&R<=r){
-    return tree[x].sum;
+    return tree[x].maxx;
     }
     else{
         push_down(x);
-        ll ans = 0;
+        db ans1 = -inf;
+        db ans2 = -inf;
         int mid = L+R>>1;
-        if(mid>=l) ans+=query(x<<1,l,r);
-        if(r>mid) ans+=query(x<<1|1,l,r);
+        if(mid>=l) ans1=query(x<<1,l,r);
+        if(r>mid) ans2=query(x<<1|1,l,r);
         push_up(x);
-        return ans
+        return max(ans1,ans2);
     }
 }
+int nx[maxn];
+int pos[maxn];
+bool check(db x){
+	build(1,1,n);
+	for(int i=1;i<=n;i++){
 
+		update(1,i,n,-1);
+		if(nx[i]<=n) update(1,nx[i],n,1);
+	}
+	//dbg(query(1,1,n));
+	int flag = 0;
+	for(int i=1;i<=n;i++)
+	{
+		if(query(1,i,n)>=db(i)*midd){
+			return true;
+		}
+		update(1,i,nx[i]-1,1);
+	}
+	return false;
 
+}
+int main(){
+	FILEIN;
+	FILEOUT;
+	int t = Read();
+	while(t--){
+		n = Read();
+		for(int i=1;i<=n;i++){
+			a[i] = Read();
+			pos[i] = n+1;
+			nx[i] = n+1;
+		}
+		for(int i=n;i>=1;i--){
+			nx[i] = pos[a[i]];
+			pos[a[i]] = i;
+		}
+
+		db l = 0;
+		db r = 1;
+		for(int tm = 0;tm<20;tm++){
+			midd = (l+r)/2.0;
+			if(check(midd)) r= midd;
+			else l = midd;
+		}
+		printf("%.10f\n",l);
+	}
+
+}

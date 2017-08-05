@@ -137,22 +137,14 @@ ll Max_Dis_Twopoints(point p[],int n){
 int main(){
 
     int n;
-    int t= Read();
-    while(t--){
-    scanf("%d",&n);
+    while(scanf("%d",&n)!=EOF){
 		top = 0;
-		int k = 0;
 		for(int i=0;i<n;i++){
 			int x = Read();
 			int y = Read();
-			int z = Read();
-			p[k++] = point{x,y};
-			p[k++] = point{x,y+z};
-			p[k++] = point{x+z,y};
-			p[k++] = point{x+z,y+z};
-
+			p[i] = {x,y};
     }
-    Graham(k);
+    Graham(n);
     for(int i=0;i<top;i++) p[i] = p[st[i]];
     ll ans = Max_Dis_Twopoints(p,top);
     cout << ans << endl;
