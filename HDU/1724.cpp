@@ -14,6 +14,8 @@
 #define FILEOUT freopen("out.txt", "w", stdout)
 #define CLOSEIO ios::sync_with_stdio(false)
 #define PI acos(-1)
+#define CLR(a) memset(a,0,sizeof(a))
+#define MEM(a,x) memset(a,x,sizeof(a))
 #define eps 1e-8
 #define sf(x) scanf("%d",&x)
 #define PB(x) push_back(x)
@@ -26,7 +28,7 @@
 #define dbg(x) cout << #x << "=" << x << endl
 #define _ixvii0iv
 using namespace std;
-const int maxn = 3e3+5;
+const int maxn = 1e5+5;
 typedef long long ll;
 typedef double db;
 const int inf = INT_MAX;
@@ -43,30 +45,37 @@ int Read() {
     return x * F;
 
 }
-struct point
-{
-    int v,co;
-    int id;
-}p[105];
+db a,b,l,r;
+int num;
+int sgn(db x){
+	return x<-eps?-1:x>eps?1:0;
+}
+bool eq(db a,db b){
+	return fabs(a-b)<=10*eps;
+}
+inline db F(db x){
+	return sqrt((1-x*x/(a*a))*b*b);
+}
+inline db simpson(db a, db b){
+	db c = a+(b-a)/2;
+	return (F(a)+F(b)+4*F(c))*(b-a)/6;
+}
+inline db asr(db a,db b,db A){
+	db c = a+(b-a)/2;
+	db L = simpson(a,c); db R = simpson(c,b);
+	if(eq(L+R,A)) return L+R+(L+R-A)/10.0;
+	return asr(a,c,L)+asr(c,b,R);
 
-int a[maxn];
+}
+inline db get(db l,db r){
+	return 2*asr(l,r,simpson(l,r));
+}
 int main(){
-	int m,n;
-	while(scanf("%d %d",&n,&m)!=EOF){
-		CLR(a);
-		for(int i=0;i<m;i++){
-			int u = Read();
-			int v = Read();
-			int w = Read();
-			if(u!=v){
-			a[u]+=w;
-			a[v]+=w;
-			}
+
+    int ca = 1;
+    int t = Read();
+    while(t--){
+		scanf("%lf %lf %lf %lf",&a,&b,&l,&r);
+		printf("%.3f\n",get(l,r));
 		}
-		int minn = inf;
-		for(int i=1;i<=n;i++){
-			minn = min(minn,a[i]);
-		}
-		cout << minn <<endl;
-	}
 }

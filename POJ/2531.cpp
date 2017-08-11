@@ -14,6 +14,8 @@
 #define FILEOUT freopen("out.txt", "w", stdout)
 #define CLOSEIO ios::sync_with_stdio(false)
 #define PI acos(-1)
+#define CLR(a) memset(a,0,sizeof(a))
+#define MEM(a,x) memset(a,x,sizeof(a))
 #define eps 1e-8
 #define sf(x) scanf("%d",&x)
 #define PB(x) push_back(x)
@@ -26,7 +28,7 @@
 #define dbg(x) cout << #x << "=" << x << endl
 #define _ixvii0iv
 using namespace std;
-const int maxn = 3e3+5;
+const int maxn = 1e5+5;
 typedef long long ll;
 typedef double db;
 const int inf = INT_MAX;
@@ -43,30 +45,39 @@ int Read() {
     return x * F;
 
 }
-struct point
-{
-    int v,co;
-    int id;
-}p[105];
-
-int a[maxn];
-int main(){
-	int m,n;
-	while(scanf("%d %d",&n,&m)!=EOF){
-		CLR(a);
-		for(int i=0;i<m;i++){
-			int u = Read();
-			int v = Read();
-			int w = Read();
-			if(u!=v){
-			a[u]+=w;
-			a[v]+=w;
-			}
-		}
-		int minn = inf;
-		for(int i=1;i<=n;i++){
-			minn = min(minn,a[i]);
-		}
-		cout << minn <<endl;
+int res = 0;
+int g[25][25];
+int vis[30];
+int n;
+void dfs(int x,int num){
+	vis[x] = 1;
+	int sum = num;
+	for(int i=1;i<=n;i++){
+		if(vis[i]) sum -= g[x][i];
+		else sum += g[x][i];
 	}
+	res = max(res,sum);
+	for(int i = x+1;i<=n;i++){
+		if(sum>num){
+			dfs(i,sum);
+			vis[i] = 0;
+		}
+	}
+}
+int main(){
+
+    #ifndef ONLINE_JUDGE
+        FILEIN;
+    #endif
+	n = Read();
+	for(int i=1;i<=n;i++){
+		for(int j=1;j<=n;j++){
+			int w;
+			scanf("%d",&w);
+			if(i!=j) g[i][j] = w;
+		}
+	}
+	dfs(1,0);
+	cout << res << endl;;
+
 }

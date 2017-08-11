@@ -14,8 +14,6 @@
 #define FILEOUT freopen("out.txt", "w", stdout)
 #define CLOSEIO ios::sync_with_stdio(false)
 #define PI acos(-1)
-#define CLR(a) memset(a,0,sizeof(a))
-#define MEM(a,x) memset(a,x,sizeof(a))
 #define eps 1e-8
 #define sf(x) scanf("%d",&x)
 #define PB(x) push_back(x)
@@ -23,9 +21,11 @@
 #define lowbit(x) x&(-x)
 #define fi first
 #define se second
+#define endl '\n'
 #define rep(a,b,c) for(int (a)=(b);(a)<(c);(a)++)
 #define drep(a,b,c) for(int (a)=(b);(a)>(c);--(a))
 #define dbg(x) cout << #x << "=" << x << endl
+#define _ixvii0iv
 using namespace std;
 const int maxn = 1e5+5;
 typedef long long ll;
@@ -37,36 +37,43 @@ ll mul(ll x,ll y){return x*y%mod;}
 ll q_mul(ll a, ll b){ ll ans = 0;while(b){if(b & 1){ans=(ans+a)%mod;} b>>=1;a=(a+a) % mod;}return ans;}
 ll q_pow(ll x , ll y){ll res=1;while(y){if(y&1) res=q_mul(res,x) ; y>>=1 ; x=q_mul(x,x);} return res;}
 ll inv(ll x) { return q_pow(x, mod-2); }
-int Read() {
 
-    int x = 0, F = 1; char C = getchar();
-    while (C < '0' || C > '9') { if (C == '-') F = -F; C = getchar(); }
-    while (C >= '0' && C <= '9') { x = x * 10 - '0' + C, C = getchar(); }
-    return x * F;
+template <class T>
+inline void rd(T &x) {
+    char c = getchar(); x = 0;while(!isdigit(c)) c = getchar();
+    while(isdigit(c)) { x = x * 10 + c - '0'; c = getchar();  }
 }
-int dp[105][105];
+char s[10][10];
+int a[10][10];
+void get(int x,int y){
+	for(int i=0;i<4;i++){
+		a[x][i]++;
+		a[i][y]++;
+	}
+	a[x][y]++;
+}
 int main(){
-
-    #ifdef ONLINE_JUDGE
-    #else
-        FILEIN;
-    #endif
-    string s;
-    while(cin >> s){
-        if(s=="end") return 0;
-        CLR(dp);
-        int len = s.length();
-        for(int i=1;i<len;i++){
-            for(int j=0,k=i;j<len,k<len;j++,k++){
-                if(s[j]=='('&&s[k]==')'||s[j]=='['&&s[k]==']')
-                dp[j][k] = dp[j+1][k-1]+2;
-                for(int l=j;l<k;l++){
-                    dp[j][k] = max(dp[j][k],dp[j][l]+dp[l+1][k]);
-                }
-            }
-
-        }
-        cout<< dp[0][len-1] << endl;
-    }
+	for(int i=0;i<4;i++)
+	scanf("%s",s[i]);
+	for(int i=0;i<4;i++){
+		for(int j=0;j<4;j++){
+			if(s[i][j]=='+')
+				get(i,j);
+		}
+	}
+	int ans = 0;
+	for(int i=0;i<4;i++){
+		for(int j=0;j<4;j++){
+			ans+=a[i][j]&1;
+		}
+	}
+	cout << ans << endl;
+	for(int i=0;i<4;i++){
+		for(int j=0;j<4;j++){
+			if(a[i][j]&1){
+				cout << i+1 << " " << j+1 << endl;
+			}
+		}
+	}
 
 }

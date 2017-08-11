@@ -88,10 +88,8 @@ int main(){
                         break;
                     }
                 }
-                if(!flag){
-                    prime[i]=false;
-                }
-                else 
+
+                if(flag)
                 {
                     cout << s <<"\n";
                     break;
