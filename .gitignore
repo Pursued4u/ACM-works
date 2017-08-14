@@ -1,7 +1,9 @@
 *
+*/*
 !*/
-ut/
 !.gitignore
 !*.cpp
 !*.java
-!*.md 
+!*.md
+!*.txt
+*/Makefile

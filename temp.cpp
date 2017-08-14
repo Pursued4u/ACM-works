@@ -46,12 +46,17 @@ int Read() {
     return x * F;
 
 }
+void solve(){
 
-
+}
 int main(){
-
     #ifndef ONLINE_JUDGE
         FILEIN;
     #endif
+    int t = 10;
+    int ca = 1;
+    while(t--){
+        solve();
+    }
 
 }
