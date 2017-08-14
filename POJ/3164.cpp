@@ -87,7 +87,7 @@ db ZL(int root,int n,int m,Edge edge[]){
             }
             if(v!=root &&id[v]==-1){
                 for(u=pre[v];u!=v;u = pre[u]) id[u] = cnt;
-                id[v] = cnt++; 
+                id[v] = cnt++;
             }
         }
         if(cnt==0) break;

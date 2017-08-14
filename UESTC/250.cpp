@@ -46,7 +46,7 @@ int Read() {
 ll dp[25][20][2];
 int a[25];
 ll getsum(int po,int pre,int fg, int limit){
-   if(po<0) return 1; 
+   if(po<0) return 1;
    if(!limit && dp[po][pre][fg]!=-1) return dp[po][pre][fg];
    int up = limit?a[po]:9;
    ll res = 0;
@@ -55,7 +55,7 @@ ll getsum(int po,int pre,int fg, int limit){
            res+=getsum(po-1,i,fg||i,limit&&(i==up));
        }
    }
-   if(!limit) return dp[po][pre][fg] = res; 
+   if(!limit) return dp[po][pre][fg] = res;
    return res;
 }
 ll get(ll x){
