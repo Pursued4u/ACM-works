@@ -1,56 +1,57 @@
-#include<ext/pb_ds/assoc_container.hpp>
-#include<algorithm>
-#include<iostream>
-#include<cstdlib>
-#include<cstring>
 #include<cstdio>
-#include <cstddef>
-#include<cmath>
-#include<ext/pb_ds/tree_policy.hpp>
-#include<map>
+#include<iostream>
+#include<cstring>
+#include<string>
+#include<algorithm>
 #include<bits/stdc++.h>
-using namespace __gnu_pbds;
+#include<map>
+#include<cmath>
+#include<vector>
+#include<stack>
+#include<climits>
+#include<ctime>
+#include<queue>
+#define FILEIN freopen("in.txt", "r", stdin)
+#define FILEOUT freopen("out.txt", "w", stdout)
+#define CLOSEIO ios::sync_with_stdio(false)
+#define PI acos(-1)``
+#define CLR(a) memset(a,0,sizeof(a))
+#define MEM(a,x) memset(a,x,sizeof(a))
+#define eps 1e-8
+#define sf(x) scanf("%d",&x)
+#define PB(x) push_back(x)
+#define MP(x, y) make_pair(x, y)
+#define lowbit(x) x&(-x)
+#define fi first
+#define se second
+#define rep(a,b,c) for(int (a)=(b);(a)<(c);(a)++)
+#define drep(a,b,c) for(int (a)=(b);(a)>(c);--(a))
+#define dbg(x) cout << #x << "=" << x << endl
+#define _ixvii0iv
 using namespace std;
+const int maxn = 1e5+5;
+typedef long long ll;
+typedef double db;
+const int inf = INT_MAX;
+const ll INF = LLONG_MAX;
+const ll mod = 1e9 + 7;
+ll mul(ll x,ll y){return x*y%mod;}
+ll q_mul(ll a, ll b){ ll ans = 0;while(b){if(b & 1){ans=(ans+a)%mod;} b>>=1;a=(a+a) % mod;}return ans;}
+ll q_pow(ll x , ll y){ll res=1;while(y){if(y&1) res=q_mul(res,x) ; y>>=1 ; x=q_mul(x,x);} return res;}
+ll inv(ll x) { return q_pow(x, mod-2); }
+int Read() {
+    int x = 0, F = 1; char C = getchar();
+    while (C < '0' || C > '9') { if (C == '-') F = -F; C = getchar(); }
+    while (C >= '0' && C <= '9') { x = x * 10 - '0' + C, C = getchar(); }
+    return x * F;
 
-typedef long long LL;
+}
 
-__gnu_pbds::tree<LL,null_type,less<LL>,rb_tree_tag,tree_order_statistics_node_update>T;
 
-map<int,int>MP;
+int main(){
 
-int Q,opt;
+    #ifndef ONLINE_JUDGE
+        FILEIN;
+    #endif
 
-LL x;
-
-int main()
-{
-    scanf("%d",&Q);
-    while (Q--)
-    {
-        scanf("%d%lld",&opt,&x);
-        if (opt==1)
-            T.insert((x<<20)+(MP[x]++));
-        else if (opt==2)
-        {
-            T.erase(T.find((x<<20)+(--MP[x])));
-            if (!MP[x])
-                MP.erase(MP.find(x));
-        }
-        else if (opt==3)
-            printf("%d\n",T.order_of_key(x<<20)+1);
-        else if (opt==4)
-            printf("%lld\n",*T.find_by_order(x-1)>>20);
-        else if (opt==5)
-        {
-            map<int,int>::iterator key=MP.lower_bound(x);
-            key--;
-            printf("%d\n",key->first);
-        }
-        else
-        {
-            map<int,int>::iterator key=MP.upper_bound(x);
-            printf("%d\n",key->first);
-        }
-    }
-    return 0;
 }

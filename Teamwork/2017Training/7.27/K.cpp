@@ -1,0 +1,91 @@
+#include<cstdio>
+#include<iostream>
+#include<cstring>
+#include<string>
+#include<algorithm>
+#include<map>
+#include<cmath>
+#include<vector>
+#include<stack>
+#include<climits>
+#include<ctime>
+#include<queue>
+#define FILEIN freopen("in.txt", "r", stdin)
+#define FILEOUT freopen("out.txt", "w", stdout)
+#define CLOSEIO ios::sync_with_stdio(false)
+#define PI acos(-1)
+#define CLR(a) memset(a,0,sizeof(a))
+#define MEM(a,x) memset(a,x,sizoef(a))
+#define eps 1e-8
+#define sf(x) scanf("%d",&x)
+#define PB(x) push_back(x)
+#define MP(x, y) make_pair(x, y)
+#define lowbit(x) x&(-x)
+#define fi first
+#define se second
+#define rep(a,b,c) for(int (a)=(b);(a)<(c);(a)++)
+#define drep(a,b,c) for(int (a)=(b);(a)>(c);--(a))
+#define dbg(x) cout << #x << "=" << x << endl
+using namespace std;
+const int maxn = 1e5+5;
+typedef long long ll;
+typedef double db;
+const int inf = INT_MAX;
+const ll INF = LLONG_MAX;
+const ll mod = 1e9 + 7;
+ll mul(ll x,ll y){return x*y%mod;}
+ll q_mul(ll a, ll b){ ll ans = 0;while(b){if(b & 1){ans=(ans+a)%mod;} b>>=1;a=(a+a) % mod;}return ans;}
+ll q_pow(ll x , ll y){ll res=1;while(y){if(y&1) res=q_mul(res,x) ; y>>=1 ; x=q_mul(x,x);} return res;}
+ll inv(ll x) { return q_pow(x, mod-2); }
+int Read() {
+    int x = 0, F = 1; char C = getchar();
+    while (C < '0' || C > '9') { if (C == '-') F = -F; C = getchar(); }
+    while (C >= '0' && C <= '9') { x = x * 10 - '0' + C, C = getchar(); }
+    return x * F;
+}
+const int MAXP = 512;
+const int MAXN = 256;
+bool mp[MAXN][MAXN];
+struct Point{
+    int x, y;
+    Point(int xx=0, int yy=0)
+    :x(xx), y(yy) {}
+    Point operator + (const Point& b) {
+        return Point(x+b.x, y+b.y);
+    }
+    Point operator - (const Point& b) {
+        return Point(x-b.x, y-b.y);
+    }
+    bool in() {
+        if(x<0||x>=MAXN||y<0||y>=MAXN)
+            return false;
+        return mp[x][y];
+    }
+}P[MAXP];
+int n;
+int main()
+{
+    while(~scanf("%d", &n)) {
+
+        memset(mp, false, sizeof(mp));
+        for(int i=0; i<n; ++i) {
+            int x, y;
+            scanf("%d%d", &x, &y);
+            P[i] = Point(x+100, y+100);
+            mp[x+100][y+100] = true;
+        }
+        int ans=0;
+        for(int i=0; i<n; ++i)
+        for(int j=i+1; j<n; ++j) {
+            Point v =P[j]-P[i];
+            Point k=Point(v.y,-v.x);
+            Point r=Point(-v.y, v.x);
+            if((r+P[i]).in()&&(r+v+P[i]).in())
+                ++ans;
+            if((k+P[i]).in()&&(k+v+P[i]).in())
+                ++ans;
+        }
+        printf("%d\n", ans/4);
+    }
+    return 0;
+}
