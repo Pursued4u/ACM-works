@@ -45,10 +45,56 @@ int Read() {
     return x * F;
 
 }
+int n,m,k;
+int mp[100][100];
+int a[100];
+
+bool ismax(int x,int y){
+    for(int i = 1;i <= n;++i){
+        if(mp[i][y] >= mp[x][y] && i!=x) return false;
+    }
+    for(int i = 1;i <= m;++i)
+        if(mp[x][i] >= mp[x][y] && i!= y) return false;
+    return true;
+}
+
+void chk(){
+    int g = 0;
+    for(int i = 1;i <= n;++i){
+        for(int j = 1;j <= m;++j){
+            if(ismax(i,j)) g++;
+            //cout << mp[i][j] << " ";
+        }
+        //cout << endl;
+    }
+    a[g]++;
+    //cout << "*******************" << endl;
+}
+
+void DFS(int x,int y){
+    if(x == n+1){
+        chk();return;
+    }
+    for(int i = 1;i <= k;++i){
+        mp[x][y] = i;
+        if(y == m)  DFS(x+1,1);
+        else DFS(x,y+1);
+    }
+}
+
+void brunte(){
+    char c=' ';
+    cout << n << c<< m <<c<< k<<endl;
+    memset(a,0,sizeof(a));
+    DFS(1,1);
+    ll ans=0;
+    for(int i =  0;i < 10;++i) ans += (i+1)*a[i];
+    cout <<ans<<endl;
+}
+
 int main(){
-
-    #ifndef ONLINE_JUDGE
-        FILEIN;
-    #endif
-
+    for(k=2; k<60; ++k)
+        for(n=1; n<2; ++n)
+            for(m=1; m<2; ++m)
+                brunte();
 }
